@@ -1,15 +1,8 @@
 <footer class="footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6">
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-            </div>
-            <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block">
-                    Team
-                </div>
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0">&copy; 2025 <a href="{{ config('app.url') }}" class="text-decoration-none">{{ config('app.name') }}</a> | All rights reserved.</p>
             </div>
         </div>
     </div>

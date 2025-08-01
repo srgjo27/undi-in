@@ -17,7 +17,7 @@
         </div>
         <!-- end page title -->
         <div class="row">
-            {{-- TODO --}}
+            {{ $slot }}
         </div>
     </div>
 </div>

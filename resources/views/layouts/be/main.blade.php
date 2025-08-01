@@ -7,7 +7,6 @@
     <div id="layout-wrapper">
         @include('layouts.be.header')
         @include('layouts.be.navbar')
-        <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>
         <div class="main-content">
             @include('layouts.be.content')
