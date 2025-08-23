@@ -9,12 +9,7 @@
 <script src="{{ asset('template/be/dist/default/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
-<script src="{{ asset('template/be/dist/default/assets/js/app.js') }}"></script>
+<script src="{{ asset('template/be/dist/default/assets/js/pages/profile.init.js') }}"></script>
+<script src="{{ asset('template/be/dist/default/assets/js/pages/profile-setting.init.js') }}"></script>
 
-<script>
-function confirmLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        document.getElementById('logout-form').submit();
-    }
-}
-</script>
+<script src="{{ asset('template/be/dist/default/assets/js/app.js') }}"></script>

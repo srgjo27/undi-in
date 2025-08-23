@@ -16,8 +16,6 @@
             </div>
         </div>
         <!-- end page title -->
-        <div class="row">
-            {{ $slot }}
-        </div>
+        {{ $slot }}
     </div>
 </div>

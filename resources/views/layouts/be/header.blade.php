@@ -130,125 +130,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="dropdown ms-1 topbar-head-dropdown header-item">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img"
-                            src="{{ asset('template/be/dist/default/assets/images/flags/us.svg') }}"
-                            alt="Header Language" height="20" class="rounded">
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language py-2" data-lang="en"
-                            title="English">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/us.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">English</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp"
-                            title="Spanish">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/spain.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Española</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr"
-                            title="German">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/germany.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18"> <span
-                                class="align-middle">Deutsche</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it"
-                            title="Italian">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/italy.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Italiana</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru"
-                            title="Russian">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/russia.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">русский</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ch"
-                            title="Chinese">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/china.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">中国人</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="fr"
-                            title="French">
-                            <img src="{{ asset('template/be/dist/default/assets/images/flags/french.svg') }}"
-                                alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">français</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="dropdown topbar-head-dropdown ms-1 header-item">
-                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class='bx bx-category-alt fs-22'></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-lg p-0 dropdown-menu-end">
-                        <div class="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h6 class="m-0 fw-semibold fs-15"> Web Apps </h6>
-                                </div>
-                                <div class="col-auto">
-                                    <a href="#!" class="btn btn-sm btn-soft-info"> View All Apps
-                                        <i class="ri-arrow-right-s-line align-middle"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2">
-                            <div class="row g-0">
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/github.png') }}"
-                                            alt="Github">
-                                        <span>GitHub</span>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/bitbucket.png') }}"
-                                            alt="bitbucket">
-                                        <span>Bitbucket</span>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/dribbble.png') }}"
-                                            alt="dribbble">
-                                        <span>Dribbble</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="row g-0">
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/dropbox.png') }}"
-                                            alt="dropbox">
-                                        <span>Dropbox</span>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/mail_chimp.png') }}"
-                                            alt="mail_chimp">
-                                        <span>Mail Chimp</span>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ asset('template/be/dist/default/assets/images/brands/slack.png') }}"
-                                            alt="slack">
-                                        <span>Slack</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="dropdown topbar-head-dropdown ms-1 header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                         id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -751,26 +632,12 @@
                         <a class="dropdown-item" href="apps-chat.html"><i
                                 class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Messages</span></a>
-                        <a class="dropdown-item" href="apps-tasks-kanban.html"><i
-                                class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
-                            <span class="align-middle">Taskboard</span></a>
-                        <a class="dropdown-item" href="pages-faqs.html"><i
-                                class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Help</span></a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="pages-profile.html"><i
-                                class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Balance : <b>$5971.67</b></span></a>
-                        <a class="dropdown-item" href="pages-profile-settings.html"><span
-                                class="badge bg-soft-success text-success mt-1 float-end">New</span><i
+                        <a class="dropdown-item" href="pages-profile-settings.html"><i
                                 class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Settings</span></a>
-                        <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
-                                class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Lock screen</span></a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                        <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-inline">
                             @csrf
-                            <button type="button" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;" onclick="confirmLogout()">
+                            <button type="button" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
                                 <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> 
                                 <span class="align-middle" data-key="t-logout">Logout</span>
                             </button>
