@@ -3,7 +3,17 @@
         <div class="navbar-header">
             <div class="d-flex">
                 <div class="navbar-brand-box horizontal-logo">
-                    <a href="#" class="logo logo-dark">
+                    @if(Auth::check())
+                        @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+                        @elseif(Auth::user()->role === 'seller')
+                            <a href="{{ route('seller.dashboard') }}" class="logo logo-dark">
+                        @else
+                            <a href="{{ route('buyer.dashboard') }}" class="logo logo-dark">
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}" class="logo logo-dark">
+                    @endif
                         <span class="logo-sm">
                             <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
                                 height="22">
@@ -13,7 +23,18 @@
                                 alt="" height="17">
                         </span>
                     </a>
-                    <a href="#" class="logo logo-light">
+
+                    @if(Auth::check())
+                        @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+                        @elseif(Auth::user()->role === 'seller')
+                            <a href="{{ route('seller.dashboard') }}" class="logo logo-light">
+                        @else
+                            <a href="{{ route('buyer.dashboard') }}" class="logo logo-light">
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}" class="logo logo-light">
+                    @endif
                         <span class="logo-sm">
                             <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
                                 height="22">
@@ -626,7 +647,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <h6 class="dropdown-header">Welcome {{ Auth::user()->name }}!</h6>
-                        <a class="dropdown-item" href="pages-profile.html"><i
+                        <a class="dropdown-item" href="{{ route('profile') }}"><i
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
                         <a class="dropdown-item" href="apps-chat.html"><i
@@ -637,7 +658,7 @@
                                 class="align-middle">Settings</span></a>
                         <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-inline">
                             @csrf
-                            <button type="button" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
+                            <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
                                 <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> 
                                 <span class="align-middle" data-key="t-logout">Logout</span>
                             </button>

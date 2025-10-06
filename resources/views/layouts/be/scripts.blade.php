@@ -8,7 +8,7 @@
 <script src="{{ asset('template/be/dist/default/assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
-<script src="{{ asset('template/be/dist/default/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
+
 <script src="{{ asset('template/be/dist/default/assets/js/pages/profile.init.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/js/pages/profile-setting.init.js') }}"></script>
 

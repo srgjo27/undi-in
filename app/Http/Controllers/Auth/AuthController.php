@@ -102,9 +102,9 @@ class AuthController extends Controller
             case 'seller':
                 return redirect()->route('seller.dashboard')->with('success', 'Selamat datang, Penjual!');
             case 'buyer':
-                return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang!');
+                return redirect()->route('buyer.dashboard')->with('success', 'Selamat datang!');
             default:
-                return redirect('/')->with('success', 'Login berhasil!');
+                return redirect()->route('buyer.dashboard')->with('success', 'Login berhasil!');
         }
     }
 }

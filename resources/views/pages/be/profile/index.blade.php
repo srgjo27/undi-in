@@ -1,7 +1,12 @@
-<x-be-component>
+@extends('layouts.be')
+
+@section('title', 'Profile')
+
+@section('content')
     <div class="profile-foreground position-relative mx-n4 mt-n4">
         <div class="profile-wid-bg">
-            <img src="{{ asset('template/be/dist/default/assets/images/profile-bg.jpg') }}" alt="" class="profile-wid-img" />
+            <img src="{{ asset('template/be/dist/default/assets/images/profile-bg.jpg') }}" alt=""
+                class="profile-wid-img" />
         </div>
     </div>
     <div class="pt-4 mb-4 mb-lg-3 pb-lg-4">
@@ -34,7 +39,7 @@
 
                     </ul>
                     <div class="flex-shrink-0">
-                        <a href="pages-profile-settings.html" class="btn btn-success"><i
+                        <a href="{{ route('profile.edit') }}" class="btn btn-success"><i
                                 class="ri-edit-box-line align-bottom"></i> Edit Profile</a>
                     </div>
                 </div>
@@ -74,7 +79,8 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title mb-3">About</h5>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                            incididunt ut labore et dolore magna aliqua.</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,4 +90,4 @@
             </div>
         </div>
     </div>
-</x-be-component>
+@endsection

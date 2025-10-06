@@ -2,7 +2,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ config('app.name') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', config('app.name'))</title>
     <link href="{{ asset('template/be/dist/default/assets/libs/jsvectormap/css/jsvectormap.min.css') }} " rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('template/be/dist/default/assets/libs/swiper/swiper-bundle.min.css') }} " rel="stylesheet"
