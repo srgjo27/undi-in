@@ -96,6 +96,11 @@ class TransactionController extends Controller
      */
     public function report(Request $request)
     {
+        // If no parameters provided, just show the form
+        if (!$request->has(['date_from', 'date_to'])) {
+            return view('pages.be.admin.transactions.report', compact('request'));
+        }
+
         $request->validate([
             'date_from' => ['required', 'date'],
             'date_to' => ['required', 'date', 'after_or_equal:date_from'],

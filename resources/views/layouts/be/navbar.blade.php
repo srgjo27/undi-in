@@ -59,26 +59,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarTransactions" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="sidebarTransactions">
+                        <a class="nav-link menu-link" href="{{ route('admin.transactions.index') }}">
                             <i class="ri-shopping-cart-line"></i> <span data-key="t-transactions">Transactions</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarTransactions">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.transactions.index') }}" class="nav-link"
-                                        data-key="t-all-transactions">All Transactions</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.transactions.index', ['status' => 'success']) }}"
-                                        class="nav-link" data-key="t-success-transactions">Success</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.transactions.index', ['status' => 'pending']) }}"
-                                        class="nav-link" data-key="t-pending-transactions">Pending</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarCoupons" data-bs-toggle="collapse"
