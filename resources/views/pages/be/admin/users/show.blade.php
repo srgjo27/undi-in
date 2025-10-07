@@ -40,7 +40,6 @@
                     </div>
                     <div class="col-lg-4 text-lg-end">
                         <div class="d-flex flex-column flex-lg-row gap-2 justify-content-lg-end">
-
                             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-primary">
                                 <i class="las la-arrow-left me-1"></i>
                                 Back to List
@@ -62,63 +61,33 @@
                         <i class="fas fa-user-circle text-primary"></i>
                         Personal Information
                     </h5>
-
                     <div class="row g-0">
                         <div class="col-12">
-                            <div>
-                                <div class="bg-primary bg-opacity-10 text-primary">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold">Email Address</div>
-                                    <div class="text-muted">{{ $user->email }}</div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="bg-success bg-opacity-10 text-success">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold">Phone Number</div>
-                                    <div class="text-muted">{{ $user->phone_number ?: 'Not provided' }}</div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="bg-info bg-opacity-10 text-info">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold">Address</div>
-                                    <div class="text-muted">{{ $user->address ?: 'Not provided' }}</div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="bg-warning bg-opacity-10 text-warning">
-                                    <i class="fas fa-calendar-plus"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold">Registration Date</div>
-                                    <div class="text-muted">
-                                        {{ $user->created_at->format('F d, Y \a\t H:i') }}
-                                        <small class="d-block">{{ $user->created_at->diffForHumans() }}</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="bg-secondary bg-opacity-10 text-secondary">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold">Last Updated</div>
-                                    <div class="text-muted">
-                                        {{ $user->updated_at->format('F d, Y \a\t H:i') }}
-                                        <small class="d-block">{{ $user->updated_at->diffForHumans() }}</small>
-                                    </div>
-                                </div>
+                            <div class="table-responsive">
+                                <table class="table table-borderless mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Email Address</th>
+                                            <td class="text-muted">{{ $user->email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Phone Number</th>
+                                            <td class="text-muted">{{ $user->phone_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Address</th>
+                                            <td class="text-muted">{{ $user->address }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Registration Date</th>
+                                            <td class="text-muted">{{ $user->created_at->format('F d, Y \a\t H:i') }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Last Updated</th>
+                                            <td class="text-muted">{{ $user->updated_at->format('F d, Y \a\t H:i') }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

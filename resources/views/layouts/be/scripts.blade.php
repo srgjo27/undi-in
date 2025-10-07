@@ -12,4 +12,6 @@
 <script src="{{ asset('template/be/dist/default/assets/js/pages/profile.init.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/js/pages/profile-setting.init.js') }}"></script>
 
-<script src="{{ asset('template/be/dist/default/assets/js/app.js') }}"></script>
+<script src="{{ asset('template/be/src/assets/js/app.js') }}"></script>
+
+@stack('scripts')

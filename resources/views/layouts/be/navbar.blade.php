@@ -54,26 +54,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarProperties" data-bs-toggle="collapse" role="button"
-                            aria-expanded="false" aria-controls="sidebarProperties">
+                        <a class="nav-link menu-link" href="{{ route('admin.properties.index') }}">
                             <i class="ri-building-line"></i> <span data-key="t-properties">Properties</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarProperties">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.properties.index') }}" class="nav-link"
-                                        data-key="t-all-properties">All Properties</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.properties.index', ['verification_status' => 'approved']) }}"
-                                        class="nav-link" data-key="t-approved-properties">Approved</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.properties.index', ['verification_status' => 'pending']) }}"
-                                        class="nav-link" data-key="t-pending-properties">Pending</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarTransactions" data-bs-toggle="collapse"
