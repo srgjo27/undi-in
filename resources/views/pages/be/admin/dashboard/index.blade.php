@@ -44,7 +44,7 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-primary rounded fs-3">
-                                    <i class="bx bx-user text-primary"></i>
+                                    <i class="las la-user text-primary"></i>
                                 </span>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-warning rounded fs-3">
-                                    <i class="bx bx-store-alt text-warning"></i>
+                                    <i class="las la-store-alt text-warning"></i>
                                 </span>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-success rounded fs-3">
-                                    <i class="bx bx-dollar-circle text-success"></i>
+                                    <i class="las la-dollar-sign text-success"></i>
                                 </span>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-info rounded fs-3">
-                                    <i class="bx bx-wallet text-info"></i>
+                                    <i class="las la-wallet text-info"></i>
                                 </span>
                             </div>
                         </div>
@@ -232,19 +232,19 @@
                     <div class="card-body">
                         <div class="d-grid gap-2">
                             <a href="{{ route('admin.users.index') }}" class="btn btn-primary">
-                                <i class="fas fa-users me-2"></i>Manage Users
+                                <i class="las la-users me-2"></i>Manage Users
                             </a>
                             <a href="{{ route('admin.properties.index') }}" class="btn btn-success">
-                                <i class="fas fa-home me-2"></i>Manage Properties
+                                <i class="las la-home me-2"></i>Manage Properties
                             </a>
                             <a href="{{ route('admin.transactions.index') }}" class="btn btn-warning">
-                                <i class="fas fa-exchange-alt me-2"></i>View Transactions
+                                <i class="las la-exchange-alt me-2"></i>View Transactions
                             </a>
                             <a href="{{ route('admin.coupons.raffles') }}" class="btn btn-info">
-                                <i class="fas fa-dice me-2"></i>Manage Raffles
+                                <i class="las la-dice me-2"></i>Manage Raffles
                             </a>
                             <a href="{{ route('admin.system.config') }}" class="btn btn-secondary">
-                                <i class="fas fa-cog me-2"></i>System Config
+                                <i class="las la-cog me-2"></i>System Config
                             </a>
                         </div>
                     </div>
