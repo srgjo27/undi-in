@@ -5,18 +5,18 @@
             <form action="{{ route('admin.properties.update-status', $property) }}" method="POST">
                 @csrf
                 @method('PATCH')
-                
+
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-edit me-2"></i>
+                        <i class="las la-edit me-2"></i>
                         Update Status & Notes
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="status" class="form-label">Property Status</label>
-                        <select name="status" id="status" class="form-select" required>
+                        <label for="status_property" class="form-label">Property Status</label>
+                        <select name="status" id="status_property" class="form-select" required>
                             <option value="draft" {{ $property->status === 'draft' ? 'selected' : '' }}>
                                 Draft
                             </option>
@@ -34,11 +34,11 @@
                             </option>
                         </select>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes</label>
-                        <textarea name="notes" id="notes" class="form-control" rows="4" 
-                                  placeholder="Add notes about this property...">{{ $property->notes }}</textarea>
+                        <textarea name="notes" id="notes" class="form-control" rows="4"
+                            placeholder="Add notes about this property...">{{ $property->notes }}</textarea>
                         <div class="form-text">These notes are for administrative purposes.</div>
                     </div>
 
@@ -53,7 +53,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-1"></i>
+                        <i class="las la-save me-1"></i>
                         Save Changes
                     </button>
                 </div>

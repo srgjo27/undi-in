@@ -55,6 +55,7 @@ class PropertyController extends Controller
             'bedrooms' => 'required|integer|min:0',
             'bathrooms' => 'required|integer|min:0',
             'facilities' => 'nullable|array',
+            'price' => 'required|numeric|min:0',
             'coupon_price' => 'required|numeric|min:0',
             'max_coupons' => 'nullable|integer|min:1',
             'sale_start_date' => 'required|date|after_or_equal:today',
@@ -79,6 +80,7 @@ class PropertyController extends Controller
         $property->bedrooms = $request->bedrooms;
         $property->bathrooms = $request->bathrooms;
         $property->facilities = $request->facilities;
+        $property->price = $request->price;
         $property->coupon_price = $request->coupon_price;
         $property->max_coupons = $request->max_coupons;
         $property->sale_start_date = $request->sale_start_date;
@@ -136,6 +138,7 @@ class PropertyController extends Controller
             'bedrooms' => 'required|integer|min:0',
             'bathrooms' => 'required|integer|min:0',
             'facilities' => 'nullable|array',
+            'price' => 'required|numeric|min:0',
             'coupon_price' => 'required|numeric|min:0',
             'max_coupons' => 'nullable|integer|min:1',
             'sale_start_date' => 'required|date',
@@ -159,6 +162,7 @@ class PropertyController extends Controller
             'bedrooms' => $request->bedrooms,
             'bathrooms' => $request->bathrooms,
             'facilities' => $request->facilities,
+            'price' => $request->price,
             'coupon_price' => $request->coupon_price,
             'max_coupons' => $request->max_coupons,
             'sale_start_date' => $request->sale_start_date,

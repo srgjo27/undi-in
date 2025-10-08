@@ -27,6 +27,7 @@ class Property extends Model
         'bedrooms',
         'bathrooms',
         'facilities',
+        'price',
         'coupon_price',
         'max_coupons',
         'sale_start_date',
@@ -39,6 +40,7 @@ class Property extends Model
         'facilities' => 'array',
         'sale_start_date' => 'datetime',
         'sale_end_date' => 'datetime',
+        'price' => 'decimal:2',
         'coupon_price' => 'decimal:2',
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
@@ -118,6 +120,19 @@ class Property extends Model
         ];
 
         return $labels[$this->status] ?? 'Unknown';
+    }
+
+    public function getStatusIconAttribute()
+    {
+        $icons = [
+            'draft' => 'pause-circle',
+            'active' => 'play-circle',
+            'pending_draw' => 'clock',
+            'completed' => 'check-circle',
+            'cancelled' => 'times-circle',
+        ];
+
+        return $icons[$this->status] ?? 'pause-circle';
     }
 
     public function scopeActive($query)

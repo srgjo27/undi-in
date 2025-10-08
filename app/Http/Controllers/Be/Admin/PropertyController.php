@@ -21,15 +21,6 @@ class PropertyController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Filter by notes
-        if ($request->filled('has_notes')) {
-            if ($request->has_notes === 'yes') {
-                $query->whereNotNull('notes');
-            } else {
-                $query->whereNull('notes');
-            }
-        }
-
         // Search by title or seller name
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -59,6 +50,12 @@ class PropertyController extends Controller
      */
     public function updateStatus(Request $request, Property $property)
     {
+        // Prevent updating completed properties (raffle already conducted)
+        if ($property->status === 'completed') {
+            return redirect()->route('admin.properties.index')
+                ->with('error', 'Tidak dapat mengubah status properti yang sudah selesai (completed). Pengundian sudah dilakukan.');
+        }
+
         $request->validate([
             'status' => ['required', 'in:draft,active,pending_draw,completed,cancelled'],
             'notes' => ['nullable', 'string'],
@@ -102,6 +99,16 @@ class PropertyController extends Controller
             'property_ids.*' => ['exists:properties,id'],
             'status' => ['required', 'in:draft,active,pending_draw,completed,cancelled'],
         ]);
+
+        // Check if any selected properties are completed
+        $completedProperties = Property::whereIn('id', $request->property_ids)
+            ->where('status', 'completed')
+            ->count();
+
+        if ($completedProperties > 0) {
+            return redirect()->route('admin.properties.index')
+                ->with('error', "Tidak dapat mengubah status {$completedProperties} properti yang sudah selesai (completed). Pengundian sudah dilakukan.");
+        }
 
         Property::whereIn('id', $request->property_ids)
             ->update(['status' => $request->status]);

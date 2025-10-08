@@ -14,11 +14,18 @@
                             <p class="text-muted">Detail informasi properti dan status verifikasi</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#statusModal">
-                                <i class="bx bx-edit-alt me-1"></i>
-                                Update Status & Notes
-                            </button>
+                            @if($property->status !== 'completed')
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#statusModal">
+                                    <i class="las la-edit me-1"></i>
+                                    Update Status & Notes
+                                </button>
+                            @else
+                                <button type="button" class="btn btn-secondary" disabled title="Cannot update completed property">
+                                    <i class="las la-lock me-1"></i>
+                                    Property Completed
+                                </button>
+                            @endif
                             <div class="d-flex flex-column flex-lg-row gap-2 justify-content-lg-end">
                                 <a href="{{ route('admin.properties.index') }}" class="btn btn-outline-primary">
                                     <i class="las la-arrow-left me-1"></i>
@@ -51,8 +58,7 @@
                                 <!-- Status Badges -->
                                 <div class="d-flex gap-2 mb-3">
                                     <span class="badge {{ $property->status_badge }} fs-6">
-                                        <i
-                                            class="bx bx-{{ $property->status === 'active' ? 'play-circle' : ($property->status === 'completed' ? 'check-circle' : ($property->status === 'cancelled' ? 'times-circle' : 'pause-circle')) }} me-1"></i>
+                                        <i class="las la-{{ $property->status_icon }} me-1"></i>
                                         {{ $property->status_label }}
                                     </span>
 
@@ -96,6 +102,11 @@
                                     <tr>
                                         <td class="fw-medium">Bathrooms:</td>
                                         <td>{{ $property->bathrooms ?? 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-medium">Property Price:</td>
+                                        <td><strong class="text-success">Rp
+                                                {{ number_format($property->price ?? 0) }}</strong></td>
                                     </tr>
                                     <tr>
                                         <td class="fw-medium">Coupon Price:</td>
@@ -253,7 +264,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Notes:</label>
                                 <div class="p-3 bg-light rounded">
-                                    <i class="bx bx-note me-2"></i>
+                                    <i class="las la-notes me-2"></i>
                                     {{ $property->notes }}
                                 </div>
                             </div>
