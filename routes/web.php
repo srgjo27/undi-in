@@ -30,9 +30,9 @@ Route::middleware(['auth', 'checkstatus'])->group(function () {
         // Property Management
         Route::get('/properties', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'index'])->name('properties.index');
         Route::get('/properties/{property}', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'show'])->name('properties.show');
-        Route::patch('/properties/{property}/verification', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'updateVerification'])->name('properties.update-verification');
+        Route::patch('/properties/{property}/status', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'updateStatus'])->name('properties.update-status');
         Route::delete('/properties/{property}', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'destroy'])->name('properties.destroy');
-        Route::patch('/properties/bulk-verification', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'bulkUpdateVerification'])->name('properties.bulk-verification');
+        Route::patch('/properties/bulk-status', [\App\Http\Controllers\Be\Admin\PropertyController::class, 'bulkUpdateStatus'])->name('properties.bulk-status');
 
         // Transaction Management
         Route::get('/transactions', [\App\Http\Controllers\Be\Admin\TransactionController::class, 'index'])->name('transactions.index');
@@ -46,7 +46,7 @@ Route::middleware(['auth', 'checkstatus'])->group(function () {
         Route::get('/coupons-report', [\App\Http\Controllers\Be\Admin\CouponController::class, 'report'])->name('coupons.report');
         Route::get('/raffles', [\App\Http\Controllers\Be\Admin\CouponController::class, 'raffles'])->name('coupons.raffles');
         Route::get('/raffles/{property}', [\App\Http\Controllers\Be\Admin\CouponController::class, 'raffleDetail'])->name('coupons.raffle-detail');
-        Route::post('/raffles/{property}/conduct', [\App\Http\Controllers\Be\Admin\CouponController::class, 'conductRaffle'])->name('coupons.conduct-raffle');
+        Route::post('/raffles/{property}/conduct', [\App\Http\Controllers\Be\Admin\CouponController::class, 'conductRaffle'])->name('coupons.conduct-raffle')->middleware('throttle:3,1');
 
         // System Configuration
         Route::get('/system/config', [\App\Http\Controllers\Be\Admin\SystemConfigController::class, 'index'])->name('system.config');

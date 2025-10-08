@@ -43,7 +43,7 @@ class AdminDashboardController extends Controller
 
         $recent_properties = $properties->sortByDesc('created_at')->take(5);
 
-        return view('pages.seller.dashboard.index', compact('stats', 'recent_properties'));
+        return view('pages.be.seller.dashboard.index', compact('stats', 'recent_properties'));
     }
 
     private function adminDashboard()
@@ -56,9 +56,11 @@ class AdminDashboardController extends Controller
             'active_users' => User::whereNotNull('email_verified_at')->count(),
 
             'total_properties' => Property::count(),
-            'pending_properties' => Property::where('verification_status', 'pending')->count(),
-            'approved_properties' => Property::where('verification_status', 'approved')->count(),
+            'draft_properties' => Property::where('status', 'draft')->count(),
             'active_properties' => Property::where('status', 'active')->count(),
+            'pending_draw_properties' => Property::where('status', 'pending_draw')->count(),
+            'completed_properties' => Property::where('status', 'completed')->count(),
+            'cancelled_properties' => Property::where('status', 'cancelled')->count(),
 
             'total_orders' => Order::count(),
             'completed_orders' => Order::where('status', 'completed')->count(),

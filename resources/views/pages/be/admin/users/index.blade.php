@@ -14,7 +14,7 @@
                             <p class="text-muted">Kelola semua pengguna sistem</p>
                         </div>
                         <button type="button" class="btn btn-primary btn-label waves-effect waves-light"><i
-                                class="bx bx-plus label-icon align-middle fs-16 me-2"></i><a
+                                class="las la-plus label-icon align-middle fs-16 me-2"></i><a
                                 href="{{ route('admin.users.create') }}" class="text-white">Add New User</a></button>
                     </div>
                 </div>
@@ -47,13 +47,14 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-primary rounded fs-3">
-                                    <i class="bx bx-user text-primary"></i>
+                                    <i class="las la-user text-primary"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-md-6">
                 <div class="card card-animate">
                     <div class="card-body">
@@ -78,13 +79,14 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-success rounded fs-3">
-                                    <i class="bx bx-user-check text-success"></i>
+                                    <i class="las la-user-check text-success"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-md-6">
                 <div class="card card-animate">
                     <div class="card-body">
@@ -109,13 +111,14 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-warning rounded fs-3">
-                                    <i class="bx bx-store-alt text-warning"></i>
+                                    <i class="las la-store-alt text-warning"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-md-6">
                 <div class="card card-animate">
                     <div class="card-body">
@@ -140,7 +143,7 @@
                             </div>
                             <div class="avatar-sm flex-shrink-0">
                                 <span class="avatar-title bg-soft-info rounded fs-3">
-                                    <i class="bx bx-shopping-bag text-info"></i>
+                                    <i class="las la-shopping-bag text-info"></i>
                                 </span>
                             </div>
                         </div>

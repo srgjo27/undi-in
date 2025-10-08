@@ -140,7 +140,9 @@
                                     @php
                                         $totalTransactions = $stats['total_transactions'];
                                         $growthPercentage =
-                                            $totalTransactions > 0 ? min(round(($totalTransactions / 10) * 2.5, 1), 25) : 0;
+                                            $totalTransactions > 0
+                                                ? min(round(($totalTransactions / 10) * 2.5, 1), 25)
+                                                : 0;
 
                                     @endphp
                                     +{{ $growthPercentage }}%
@@ -184,12 +186,18 @@
                             <div class="col-md-6">
                                 <h6>Property Management</h6>
                                 <ul class="list-unstyled">
-                                    <li>Pending Verification:
-                                        <strong>{{ number_format($stats['pending_properties']) }}</strong>
-                                    </li>
-                                    <li>Approved: <strong>{{ number_format($stats['approved_properties']) }}</strong></li>
-                                    <li>Active Properties:
+                                    <li>Draft: <strong>{{ number_format($stats['draft_properties']) }}</strong></li>
+                                    <li>Active:
                                         <strong>{{ number_format($stats['active_properties']) }}</strong>
+                                    </li>
+                                    <li>Pending Draw:
+                                        <strong>{{ number_format($stats['pending_draw_properties']) }}</strong>
+                                    </li>
+                                    <li>Completed:
+                                        <strong>{{ number_format($stats['completed_properties']) }}</strong>
+                                    </li>
+                                    <li>Cancelled:
+                                        <strong>{{ number_format($stats['cancelled_properties']) }}</strong>
                                     </li>
                                 </ul>
                             </div>
@@ -286,9 +294,8 @@
                                     <small class="text-muted">By {{ $property->seller->name }} •
                                         {{ $property->created_at->diffForHumans() }}</small>
                                 </div>
-                                <span
-                                    class="badge bg-{{ $property->verification_status === 'approved' ? 'success' : ($property->verification_status === 'rejected' ? 'danger' : 'warning') }}">
-                                    {{ ucfirst($property->verification_status) }}
+                                <span class="badge {{ $property->status_badge }}">
+                                    {{ $property->status_label }}
                                 </span>
                             </div>
                         @empty

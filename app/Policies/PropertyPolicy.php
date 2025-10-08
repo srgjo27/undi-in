@@ -34,4 +34,32 @@ class PropertyPolicy
     {
         return $user->role === 'admin' || $user->id === $property->seller_id;
     }
+
+    /**
+     * Determine whether the user can conduct raffle for the property.
+     */
+    public function conductRaffle(User $user, Property $property)
+    {
+        // Only admin can conduct raffles
+        if ($user->role !== 'admin') {
+            return false;
+        }
+
+        // Property must be active
+        if ($property->status !== 'active') {
+            return false;
+        }
+
+        // Property must not have existing raffle
+        if ($property->raffles()->exists()) {
+            return false;
+        }
+
+        // Property must have at least one coupon sold
+        if ($property->coupons()->count() === 0) {
+            return false;
+        }
+
+        return true;
+    }
 }

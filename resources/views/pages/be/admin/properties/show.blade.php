@@ -14,24 +14,11 @@
                             <p class="text-muted">Detail informasi properti dan status verifikasi</p>
                         </div>
                         <div class="d-flex gap-2">
-                            @if ($property->verification_status === 'pending')
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#approveModal">
-                                    <i class="bx bx-check me-1"></i>
-                                    Approve
-                                </button>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#rejectModal">
-                                    <i class="bx bx-x me-1"></i>
-                                    Reject
-                                </button>
-                            @else
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#verificationModal">
-                                    <i class="bx bx-edit-alt me-1"></i>
-                                    Edit Verification
-                                </button>
-                            @endif
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#statusModal">
+                                <i class="bx bx-edit-alt me-1"></i>
+                                Update Status & Notes
+                            </button>
                             <div class="d-flex flex-column flex-lg-row gap-2 justify-content-lg-end">
                                 <a href="{{ route('admin.properties.index') }}" class="btn btn-outline-primary">
                                     <i class="las la-arrow-left me-1"></i>
@@ -68,12 +55,7 @@
                                             class="bx bx-{{ $property->status === 'active' ? 'play-circle' : ($property->status === 'completed' ? 'check-circle' : ($property->status === 'cancelled' ? 'times-circle' : 'pause-circle')) }} me-1"></i>
                                         {{ $property->status_label }}
                                     </span>
-                                    <span
-                                        class="badge bg-{{ $property->verification_status === 'approved' ? 'success' : ($property->verification_status === 'rejected' ? 'danger' : 'warning') }} fs-6">
-                                        <i
-                                            class="bx bx-{{ $property->verification_status === 'approved' ? 'shield-alt-2' : ($property->verification_status === 'rejected' ? 'error' : 'stopwatch') }} me-1"></i>
-                                        {{ ucfirst($property->verification_status) }}
-                                    </span>
+
                                 </div>
                             </div>
                         </div>
@@ -267,20 +249,12 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <span
-                                class="badge bg-{{ $property->verification_status === 'approved' ? 'success' : ($property->verification_status === 'rejected' ? 'danger' : 'warning') }} fs-6">
-                                <i
-                                    class="bx bx-{{ $property->verification_status === 'approved' ? 'shield-alt-2' : ($property->verification_status === 'rejected' ? 'error' : 'stopwatch') }} me-1"></i>
-                                {{ ucfirst($property->verification_status) }}
-                            </span>
-                        </div>
-
-                        @if ($property->verification_notes)
+                        @if ($property->notes)
                             <div class="mb-3">
-                                <label class="form-label">Verification Notes:</label>
+                                <label class="form-label">Notes:</label>
                                 <div class="p-3 bg-light rounded">
-                                    {{ $property->verification_notes }}
+                                    <i class="bx bx-note me-2"></i>
+                                    {{ $property->notes }}
                                 </div>
                             </div>
                         @endif
@@ -330,8 +304,8 @@
         </div>
     </div>
 
-    <!-- Verification Modals -->
-    @include('pages.be.admin.properties.partials.verification-modals')
+    <!-- Status Modals -->
+    @include('pages.be.admin.properties.partials.status-modals')
 @endsection
 
 @push('scripts')

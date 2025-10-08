@@ -32,8 +32,7 @@ class Property extends Model
         'sale_start_date',
         'sale_end_date',
         'status',
-        'verification_status',
-        'verification_notes',
+        'notes',
     ];
 
     protected $casts = [
@@ -84,7 +83,7 @@ class Property extends Model
 
     public function getSoldCouponsAttribute()
     {
-        return $this->orders()->where('status', 'completed')->sum('quantity');
+        return $this->orders()->whereIn('status', ['paid', 'completed'])->sum('quantity');
     }
 
     public function getAvailableCouponsAttribute()

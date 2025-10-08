@@ -21,9 +21,13 @@ class PropertyController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Filter by verification status
-        if ($request->filled('verification_status')) {
-            $query->where('verification_status', $request->verification_status);
+        // Filter by notes
+        if ($request->filled('has_notes')) {
+            if ($request->has_notes === 'yes') {
+                $query->whereNotNull('notes');
+            } else {
+                $query->whereNull('notes');
+            }
         }
 
         // Search by title or seller name
@@ -51,28 +55,30 @@ class PropertyController extends Controller
     }
 
     /**
-     * Update property verification status.
+     * Update property status and notes.
      */
-    public function updateVerification(Request $request, Property $property)
+    public function updateStatus(Request $request, Property $property)
     {
         $request->validate([
-            'verification_status' => ['required', 'in:pending,approved,rejected'],
-            'verification_notes' => ['nullable', 'string'],
+            'status' => ['required', 'in:draft,active,pending_draw,completed,cancelled'],
+            'notes' => ['nullable', 'string'],
         ]);
 
         $property->update([
-            'verification_status' => $request->verification_status,
-            'verification_notes' => $request->verification_notes,
+            'status' => $request->status,
+            'notes' => $request->notes,
         ]);
 
-        $status = [
-            'pending' => 'dikembalikan ke pending',
-            'approved' => 'disetujui',
-            'rejected' => 'ditolak'
+        $statusLabels = [
+            'draft' => 'draft',
+            'active' => 'aktif',
+            'pending_draw' => 'menunggu undian',
+            'completed' => 'selesai',
+            'cancelled' => 'dibatalkan'
         ];
 
         return redirect()->route('admin.properties.index')
-            ->with('success', "Properti berhasil {$status[$request->verification_status]}.");
+            ->with('success', "Status properti berhasil diubah menjadi {$statusLabels[$request->status]}.");
     }
 
     /**
@@ -87,23 +93,29 @@ class PropertyController extends Controller
     }
 
     /**
-     * Bulk update verification status.
+     * Bulk update property status.
      */
-    public function bulkUpdateVerification(Request $request)
+    public function bulkUpdateStatus(Request $request)
     {
         $request->validate([
             'property_ids' => ['required', 'array'],
             'property_ids.*' => ['exists:properties,id'],
-            'verification_status' => ['required', 'in:approved,rejected'],
+            'status' => ['required', 'in:draft,active,pending_draw,completed,cancelled'],
         ]);
 
         Property::whereIn('id', $request->property_ids)
-            ->update(['verification_status' => $request->verification_status]);
+            ->update(['status' => $request->status]);
 
         $count = count($request->property_ids);
-        $status = $request->verification_status === 'approved' ? 'disetujui' : 'ditolak';
+        $statusLabels = [
+            'draft' => 'draft',
+            'active' => 'aktif',
+            'pending_draw' => 'menunggu undian',
+            'completed' => 'selesai',
+            'cancelled' => 'dibatalkan'
+        ];
 
         return redirect()->route('admin.properties.index')
-            ->with('success', "{$count} properti berhasil {$status}.");
+            ->with('success', "{$count} properti berhasil diubah statusnya menjadi {$statusLabels[$request->status]}.");
     }
 }

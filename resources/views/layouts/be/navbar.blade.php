@@ -72,15 +72,11 @@
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ route('admin.coupons.index') }}" class="nav-link"
-                                        data-key="t-all-coupons">All Coupons</a>
+                                        data-key="t-all-coupons">Coupons</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.coupons.raffles') }}" class="nav-link"
                                         data-key="t-raffles">Raffles</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.coupons.index', ['is_winner' => 1]) }}" class="nav-link"
-                                        data-key="t-winners">Winners</a>
                                 </li>
                             </ul>
                         </div>

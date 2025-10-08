@@ -14,7 +14,7 @@
                             <p class="text-muted">Tambah pengguna baru ke sistem</p>
                         </div>
                         <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Users
+                            <i class="las la-arrow-left me-2"></i>Back to Users
                         </a>
                     </div>
                 </div>
@@ -31,7 +31,6 @@
                     <div class="card-body">
                         <form action="{{ route('admin.users.store') }}" method="POST">
                             @csrf
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -127,7 +126,7 @@
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bx bx-save me-2"></i>Create User
+                                    <i class="las la-save me-2"></i>Create User
                                 </button>
                                 <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancel</a>
                             </div>

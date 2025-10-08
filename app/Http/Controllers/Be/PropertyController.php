@@ -32,12 +32,12 @@ class PropertyController extends Controller
 
         $properties = $query->orderBy('created_at', 'desc')->paginate(12);
 
-        return view('pages.seller.properties.index', compact('properties'));
+        return view('pages.be.seller.properties.index', compact('properties'));
     }
 
     public function create()
     {
-        return view('pages.seller.properties.create');
+        return view('pages.be.seller.properties.create');
     }
 
     public function store(Request $request)

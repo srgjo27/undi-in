@@ -43,18 +43,11 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="verification_status" class="form-label">Verification</label>
-                                    <select name="verification_status" id="verification_status" class="form-select">
-                                        <option value="">All Verification</option>
-                                        <option value="pending"
-                                            {{ request('verification_status') === 'pending' ? 'selected' : '' }}>Pending
-                                        </option>
-                                        <option value="approved"
-                                            {{ request('verification_status') === 'approved' ? 'selected' : '' }}>Approved
-                                        </option>
-                                        <option value="rejected"
-                                            {{ request('verification_status') === 'rejected' ? 'selected' : '' }}>Rejected
-                                        </option>
+                                    <label for="has_notes" class="form-label">Notes</label>
+                                    <select name="has_notes" id="has_notes" class="form-select">
+                                        <option value="">All Properties</option>
+                                        <option value="yes" {{ request('has_notes') === 'yes' ? 'selected' : '' }}>With Notes</option>
+                                        <option value="no" {{ request('has_notes') === 'no' ? 'selected' : '' }}>Without Notes</option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -85,7 +78,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body py-2">
-                        <form id="bulkActionForm" action="{{ route('admin.properties.bulk-verification') }}"
+                        <form id="bulkActionForm" action="{{ route('admin.properties.bulk-status') }}"
                             method="post">
                             @csrf
                             @method('patch')
@@ -96,10 +89,11 @@
                                         Select All
                                     </label>
                                 </div>
-                                <select name="verification_status" class="form-select" style="width: auto;">
+                                <select name="status" class="form-select" style="width: auto;">
                                     <option value="">Bulk Action</option>
-                                    <option value="approved">Approve Selected</option>
-                                    <option value="rejected">Reject Selected</option>
+                                    <option value="active">Set Active</option>
+                                    <option value="cancelled">Cancel Selected</option>
+                                    <option value="completed">Mark Completed</option>
                                 </select>
                                 <button type="submit" class="btn btn-sm btn-primary" id="bulkActionBtn">
                                     Apply
@@ -127,7 +121,7 @@
                                         <th>Seller</th>
                                         <th>Price</th>
                                         <th>Status</th>
-                                        <th>Verification</th>
+                                        <th>Notes</th>
                                         <th>Created</th>
                                         <th>Actions</th>
                                     </tr>
@@ -179,19 +173,13 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <div class="verification-status">
-                                                    <span
-                                                        class="badge bg-{{ $property->verification_status === 'approved' ? 'success' : ($property->verification_status === 'rejected' ? 'danger' : 'warning') }}">
-                                                        <i
-                                                            class="bx bx-{{ $property->verification_status === 'approved' ? 'shield-alt-2' : ($property->verification_status === 'rejected' ? 'error' : 'stopwatch') }} me-1"></i>
-                                                        {{ ucfirst($property->verification_status) }}
-                                                    </span>
-                                                </div>
-                                                @if ($property->verification_notes)
-                                                    <br><small class="text-muted"
-                                                        title="{{ $property->verification_notes }}">
-                                                        {{ Str::limit($property->verification_notes, 30) }}
+                                                @if ($property->notes)
+                                                    <small class="text-muted" title="{{ $property->notes }}">
+                                                        <i class="bx bx-note me-1"></i>
+                                                        {{ Str::limit($property->notes, 30) }}
                                                     </small>
+                                                @else
+                                                    <small class="text-muted">-</small>
                                                 @endif
                                             </td>
                                             <td>
@@ -218,43 +206,15 @@
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
-                                                        <!-- Verification Actions -->
-                                                        @if ($property->verification_status === 'pending')
-                                                            <li>
-                                                                <a class="dropdown-item text-success" href="#"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#verificationModal{{ $property->id }}">
-                                                                    <i class="fas fa-check-circle"></i>
-                                                                    Quick Approve
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item text-warning" href="#"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#verificationModal{{ $property->id }}">
-                                                                    <i class="fas fa-times-circle"></i>
-                                                                    Reject Property
-                                                                </a>
-                                                            </li>
-                                                        @elseif($property->verification_status === 'approved')
-                                                            <li>
-                                                                <a class="dropdown-item text-warning" href="#"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#verificationModal{{ $property->id }}">
-                                                                    <i class="fas fa-edit"></i>
-                                                                    Edit Verification
-                                                                </a>
-                                                            </li>
-                                                        @else
-                                                            <li>
-                                                                <a class="dropdown-item text-success" href="#"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#verificationModal{{ $property->id }}">
-                                                                    <i class="fas fa-redo"></i>
-                                                                    Reprocess
-                                                                </a>
-                                                            </li>
-                                                        @endif
+                                                        <!-- Status Actions -->
+                                                        <li>
+                                                            <a class="dropdown-item text-primary" href="#"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#statusModal{{ $property->id }}">
+                                                                <i class="fas fa-edit"></i>
+                                                                Update Status & Notes
+                                                            </a>
+                                                        </li>
                                                         <li>
                                                             <hr class="dropdown-divider">
                                                         </li>
@@ -278,45 +238,51 @@
                                             </td>
                                         </tr>
 
-                                        <!-- Verification Modal -->
-                                        <div class="modal fade" id="verificationModal{{ $property->id }}"
+                                        <!-- Status Modal -->
+                                        <div class="modal fade" id="statusModal{{ $property->id }}"
                                             tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <form
-                                                        action="{{ route('admin.properties.update-verification', $property) }}"
+                                                        action="{{ route('admin.properties.update-status', $property) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PATCH')
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Verification: {{ $property->title }}
+                                                            <h5 class="modal-title">Update Status: {{ $property->title }}
                                                             </h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <label for="verification_status{{ $property->id }}"
+                                                                <label for="status{{ $property->id }}"
                                                                     class="form-label">Status</label>
-                                                                <select name="verification_status"
-                                                                    id="verification_status{{ $property->id }}"
+                                                                <select name="status"
+                                                                    id="status{{ $property->id }}"
                                                                     class="form-select" required>
-                                                                    <option value="pending"
-                                                                        {{ $property->verification_status === 'pending' ? 'selected' : '' }}>
-                                                                        Pending</option>
-                                                                    <option value="approved"
-                                                                        {{ $property->verification_status === 'approved' ? 'selected' : '' }}>
-                                                                        Approved</option>
-                                                                    <option value="rejected"
-                                                                        {{ $property->verification_status === 'rejected' ? 'selected' : '' }}>
-                                                                        Rejected</option>
+                                                                    <option value="draft"
+                                                                        {{ $property->status === 'draft' ? 'selected' : '' }}>
+                                                                        Draft</option>
+                                                                    <option value="active"
+                                                                        {{ $property->status === 'active' ? 'selected' : '' }}>
+                                                                        Active</option>
+                                                                    <option value="pending_draw"
+                                                                        {{ $property->status === 'pending_draw' ? 'selected' : '' }}>
+                                                                        Pending Draw</option>
+                                                                    <option value="completed"
+                                                                        {{ $property->status === 'completed' ? 'selected' : '' }}>
+                                                                        Completed</option>
+                                                                    <option value="cancelled"
+                                                                        {{ $property->status === 'cancelled' ? 'selected' : '' }}>
+                                                                        Cancelled</option>
                                                                 </select>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label for="verification_notes{{ $property->id }}"
+                                                                <label for="notes{{ $property->id }}"
                                                                     class="form-label">Notes</label>
-                                                                <textarea name="verification_notes" id="verification_notes{{ $property->id }}" class="form-control" rows="3"
-                                                                    placeholder="Add verification notes...">{{ $property->verification_notes }}</textarea>
+                                                                <textarea name="notes" id="notes{{ $property->id }}" class="form-control" rows="3"
+                                                                    placeholder="Add notes...">{{ $property->notes }}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

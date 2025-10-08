@@ -13,7 +13,8 @@
                             <h1 class="page-title">Transaction Management</h1>
                             <p class="text-muted">Monitor dan kelola semua transaksi</p>
                         </div>
-                        <a href="{{ route('admin.transactions.report') }}" class="btn btn-outline-primary" title="Generate Transaction Report">
+                        <a href="{{ route('admin.transactions.report') }}"
+                            class="btn btn-soft-primary waves-effect waves-light" title="Generate Transaction Report">
                             <i class="bx bx-chart me-2"></i>Generate Report
                         </a>
                     </div>
@@ -22,7 +23,7 @@
         </div>
 
         <!-- Statistics Cards -->
-        <div class="row mb-4">
+        <div class="row mt-4">
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white">
                     <div class="card-body">
@@ -89,7 +90,7 @@
         </div>
 
         <!-- Filters -->
-        <div class="row mb-2">
+        <div class="row mb-4">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
