@@ -15,7 +15,7 @@
                         </div>
                         <a href="{{ route('admin.transactions.report') }}"
                             class="btn btn-soft-primary waves-effect waves-light" title="Generate Transaction Report">
-                            <i class="bx bx-chart me-2"></i>Generate Report
+                            <i class="las la-chart-bar me-2"></i>Generate Report
                         </a>
                     </div>
                 </div>
@@ -146,11 +146,11 @@
                                     <label class="form-label">&nbsp;</label>
                                     <div class="d-flex gap-1">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="bx bx-search-alt-2"></i>
+                                            <i class="las la-search"></i>
                                         </button>
                                         <a href="{{ route('admin.transactions.index') }}"
                                             class="btn btn-outline-secondary">
-                                            <i class="bx bx-redo"></i>
+                                            <i class="las la-redo"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -230,13 +230,13 @@
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('admin.transactions.show', $transaction) }}"
                                                         class="btn btn-sm btn-outline-info">
-                                                        <i class="fas fa-eye"></i>
+                                                        <i class="las la-eye"></i>
                                                     </a>
                                                     @if (in_array($transaction->status, ['pending', 'processing']))
                                                         <button class="btn btn-sm btn-outline-primary"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#statusModal{{ $transaction->id }}">
-                                                            <i class="fas fa-edit"></i>
+                                                            <i class="las la-edit"></i>
                                                         </button>
                                                     @endif
                                                 </div>
@@ -305,7 +305,7 @@
                                         <tr>
                                             <td colspan="8" class="text-center py-4">
                                                 <div class="text-muted">
-                                                    <i class="fas fa-exchange-alt fa-3x mb-3"></i>
+                                                    <i class="las la-exchange-alt fs-3 mb-3"></i>
                                                     <p>No transactions found</p>
                                                 </div>
                                             </td>

@@ -14,7 +14,7 @@
                             <p class="text-muted">{{ $property->title }}</p>
                         </div>
                         <a href="{{ route('admin.coupons.raffles') }}" class="btn btn-outline-secondary">
-                            <i class="bx bx-arrow-back me-2"></i>Back to Raffles
+                            <i class="las la-arrow-left me-2"></i>Back to Raffles
                         </a>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                             </div>
 
                             @if ($coupons->count() > 0)
-                                @if ($property->verification_status === 'approved')
+                                @if ($property->status === 'pending_draw')
                                     <button class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#raffleModal">
                                         <i class="las la-dice me-2"></i>Conduct Raffle Now
                                     </button>
@@ -158,7 +158,7 @@
                                                     <strong>{{ $coupon->coupon_number }}</strong>
                                                     @if ($coupon->is_winner)
                                                         <span class="badge bg-warning ms-2">
-                                                            <i class="fas fa-crown me-1"></i>WINNER
+                                                            <i class="las la-crown me-1"></i>WINNER
                                                         </span>
                                                     @endif
                                                 </td>
@@ -187,7 +187,7 @@
                             </div>
                         @else
                             <div class="text-center py-4">
-                                <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+                                <i class="las la-ticket-alt fs-2 text-muted mb-3"></i>
                                 <p class="text-muted">No coupons sold for this property yet.</p>
                             </div>
                         @endif
@@ -198,7 +198,7 @@
     </div>
 
     <!-- Raffle Modal -->
-    @if ($property->raffles->count() === 0 && $coupons->count() > 0 && $property->verification_status === 'approved')
+    @if ($property->raffles->count() === 0 && $coupons->count() > 0 && $property->status === 'pending_draw')
         <div class="modal fade" id="raffleModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

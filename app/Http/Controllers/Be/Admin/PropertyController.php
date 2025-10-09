@@ -10,10 +10,24 @@ use Illuminate\Http\Request;
 class PropertyController extends Controller
 {
     /**
+     * Update property status automatically for all properties
+     */
+    private function updatePropertyStatusIfNeeded()
+    {
+        Property::needsStatusUpdate()
+            ->get()
+            ->each(function ($property) {
+                $property->updateStatusAutomatically();
+            });
+    }
+    /**
      * Display a listing of properties.
      */
     public function index(Request $request)
     {
+        // Update property status automatically
+        $this->updatePropertyStatusIfNeeded();
+
         $query = Property::with(['seller', 'images']);
 
         // Filter by status
@@ -41,7 +55,11 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
+        // Update property status automatically
+        $this->updatePropertyStatusIfNeeded();
+
         $property->load(['seller', 'images', 'orders.buyer']);
+        $property->refresh(); // Refresh to get updated status
         return view('pages.be.admin.properties.show', compact('property'));
     }
 

@@ -528,7 +528,7 @@
             <div class="col-6">
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>
-           
+
         </div>
     </div>
 </div>

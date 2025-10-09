@@ -177,9 +177,14 @@
             <!-- Pricing Card -->
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Informasi Kupon</h5>
+                    <h5 class="card-title mb-0">Informasi Harga</h5>
                 </div>
                 <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h4 class="text-success mb-1">Rp {{ number_format($property->price) }}</h4>
+                        <p class="text-muted mb-0">Harga Properti</p>
+                    </div>
+
                     <div class="text-center mb-3">
                         <h4 class="text-primary mb-1">Rp {{ number_format($property->coupon_price) }}</h4>
                         <p class="text-muted mb-0">per kupon</p>
@@ -250,14 +255,14 @@
                         <a href="{{ route('seller.properties.edit', $property) }}" class="btn btn-warning">
                             <i class="ri-edit-line me-1"></i> Edit Properti
                         </a>
-                        <a href="{{ route('seller.properties.index') }}" class="btn btn-secondary">
-                            <i class="ri-arrow-left-line me-1"></i> Kembali ke Daftar
-                        </a>
                         @if ($property->orders()->count() === 0)
                             <button type="button" class="btn btn-danger" onclick="deleteProperty()">
                                 <i class="ri-delete-bin-line me-1"></i> Hapus Properti
                             </button>
                         @endif
+                        <a href="{{ route('seller.properties.index') }}" class="btn btn-secondary">
+                            <i class="ri-arrow-left-line me-1"></i> Kembali ke Daftar
+                        </a>
                     </div>
                 </div>
             </div>

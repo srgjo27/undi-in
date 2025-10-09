@@ -22,10 +22,10 @@
                         </div>
                         <div class="d-flex gap-2">
                             <button class="btn btn-soft-primary waves-effect waves-light" onclick="window.print()">
-                                <i class="bx bx-printer me-2"></i>Print Report
+                                <i class="las la-print me-2"></i>Print Report
                             </button>
                             <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary">
-                                <i class="bx bx-arrow-back me-2"></i>Back to Coupons
+                                <i class="las la-arrow-left me-2"></i>Back to Coupons
                             </a>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                                     <label class="form-label">&nbsp;</label>
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-filter me-1"></i>Filter
+                                            <i class="las la-filter me-1"></i>Filter
                                         </button>
                                         <a href="{{ route('admin.coupons.report') }}" class="btn btn-outline-secondary">
                                             Reset
@@ -303,7 +303,7 @@
                                                 <strong>{{ $sale->coupon_number }}</strong>
                                                 @if ($sale->is_winner)
                                                     <span class="badge bg-warning text-dark ms-1">
-                                                        <i class="fas fa-crown"></i>
+                                                        <i class="las la-crown"></i>
                                                     </span>
                                                 @endif
                                             </td>

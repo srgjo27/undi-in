@@ -22,7 +22,7 @@
                         </div>
                         <div>
                             <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary">
-                                <i class="bx bx-arrow-back me-2"></i>Back to List
+                                <i class="las la-arrow-left me-2"></i>Back to List
                             </a>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                                 @else
                                     <div class="bg-light rounded d-flex align-items-center justify-content-center"
                                         style="height: 200px;">
-                                        <i class="bx bx-home fs-1 text-muted"></i>
+                                        <i class="las la-home fs-1 text-muted"></i>
                                     </div>
                                 @endif
                             </div>
@@ -131,7 +131,7 @@
                                 <div class="mt-3">
                                     <a href="{{ route('admin.properties.show', $coupon->property) }}"
                                         class="btn btn-sm btn-outline-primary">
-                                        <i class="bx bx-show me-1"></i>View Property Details
+                                        <i class="las la-eye me-1"></i>View Property Details
                                     </a>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
                         <div class="mt-3">
                             <a href="{{ route('admin.transactions.show', $coupon->order) }}"
                                 class="btn btn-sm btn-outline-primary">
-                                <i class="bx bx-receipt me-1"></i>View Full Order Details
+                                <i class="las la-receipt me-1"></i>View Full Order Details
                             </a>
                         </div>
                     </div>
@@ -239,7 +239,7 @@
                         <div class="mt-3">
                             <a href="{{ route('admin.users.show', $coupon->buyer) }}"
                                 class="btn btn-sm btn-outline-primary w-100">
-                                <i class="bx bx-user me-1"></i>View User Profile
+                                <i class="las la-user me-1"></i>View User Profile
                             </a>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
                             <h5 class="card-title">Raffle Status</h5>
                         </div>
                         <div class="card-body text-center">
-                            <i class="fas fa-hourglass-half fa-3x text-muted mb-3"></i>
+                            <i class="las la-hourglass-half fs-2 text-muted mb-3"></i>
                             <p class="text-muted">Raffle has not been conducted yet</p>
                             <a href="{{ route('admin.coupons.raffle-detail', $coupon->property) }}"
                                 class="btn btn-sm btn-primary">

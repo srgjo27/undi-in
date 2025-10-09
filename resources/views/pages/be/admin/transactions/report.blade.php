@@ -16,7 +16,7 @@
                         <div class="d-flex gap-2">
                             <button type="button" class="btn btn-soft-primary waves-effect waves-light"
                                 onclick="printReport()">
-                                <i class="bx bx-printer me-1"></i>
+                                <i class="las la-print me-1"></i>
                                 Print Report
                             </button>
                             <button type="button" class="btn btn-success" onclick="exportReport()">
@@ -41,7 +41,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            <i class="fas fa-filter me-2"></i>
+                            <i class="las la-filter me-2"></i>
                             Report Parameters
                         </h5>
                     </div>
@@ -82,7 +82,7 @@
                                     <label class="form-label">&nbsp;</label>
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-primary btn-label waves-effect waves-light"><i
-                                                class="bx bx-chart label-icon align-middle fs-16 me-2"></i>
+                                                class="las la-chart-bar label-icon align-middle fs-16 me-2"></i>
                                             Generate</button>
                                         <a href="{{ route('admin.transactions.report') }}"
                                             class="btn btn-outline-secondary">
@@ -104,7 +104,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">
-                                <i class="fas fa-chart-pie me-2"></i>
+                                <i class="las la-chart-pie me-2"></i>
                                 Report Summary
                             </h5>
                         </div>
@@ -165,7 +165,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">
-                                    <i class="fas fa-credit-card me-2"></i>
+                                    <i class="las la-credit-card me-2"></i>
                                     Payment Method Breakdown
                                 </h5>
                             </div>
@@ -200,7 +200,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">
-                                <i class="fas fa-list me-2"></i>
+                                <i class="las la-list me-2"></i>
                                 Detailed Transaction List
                             </h5>
                         </div>
@@ -262,7 +262,7 @@
                                             <tr>
                                                 <td colspan="7" class="text-center py-4">
                                                     <div class="text-muted">
-                                                        <i class="fas fa-chart-line fa-3x mb-3"></i>
+                                                        <i class="las la-chart-bar fs-2 mb-3"></i>
                                                         <p>No transactions found for the selected period</p>
                                                     </div>
                                                 </td>
@@ -289,7 +289,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body text-center py-5">
-                            <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+                            <i class="las la-chart-bar fs-2 text-muted mb-3"></i>
                             <h5 class="text-muted">Generate Transaction Report</h5>
                             <p class="text-muted">Please select a date range and click "Generate Report" to view
                                 transaction data.</p>

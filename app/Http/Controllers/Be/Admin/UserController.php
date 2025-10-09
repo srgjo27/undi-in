@@ -3,40 +3,57 @@
 namespace App\Http\Controllers\Be\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserIndexRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of users.
+     * Display a listing of users with enhanced security validation.
      */
-    public function index(Request $request)
+    public function index(UserIndexRequest $request)
     {
+        Log::debug('Raw input received', [
+            'all_input' => request()->all(),
+            'query_params' => request()->query(),
+            'role_param' => request()->input('role'),
+            'search_param' => request()->input('search'),
+            'url' => request()->fullUrl()
+        ]);
+
+        $validated = $request->validated();
+
         $query = User::query();
 
-        // Filter by role
-        if ($request->filled('role')) {
-            $query->where('role', $request->role);
+        if (!empty($validated['role'])) {
+            $query->where('role', $validated['role']);
         }
 
-        // Search by name or email
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                    ->orWhere('email', 'like', '%' . $request->search . '%');
+        if (!empty($validated['search'])) {
+            $searchTerm = '%' . addcslashes($validated['search'], '%_\\') . '%';
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', $searchTerm)
+                    ->orWhere('email', 'like', $searchTerm);
             });
         }
 
-        $users = $query->orderBy('created_at', 'desc')->paginate(15);
+        $perPage = min($validated['per_page'] ?? 15, 50);
+        $users = $query->orderBy('created_at', 'desc')
+            ->paginate($perPage);
 
-        // Get statistics data
         $statistics = $this->getUserStatistics();
+
+        Log::info('Admin accessed user listing', [
+            'admin_id' => Auth::id(),
+            'filters' => array_filter($validated),
+            'result_count' => $users->count(),
+            'total_results' => $users->total()
+        ]);
 
         return view('pages.be.admin.users.index', compact('users', 'statistics'));
     }
@@ -145,7 +162,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // Prevent admin from deleting themselves
         if (Auth::id() === $user->id) {
             return redirect()->route('admin.users.index')->with('error', 'Anda tidak dapat menghapus akun sendiri.');
         }
@@ -160,15 +176,12 @@ class UserController extends Controller
      */
     public function toggleStatus(User $user)
     {
-        // Prevent self-toggle
         if ($user->is(Auth::user())) {
             return back()->with('error', 'Anda tidak dapat memblokir akun sendiri.');
         }
 
-        // Toggle status using Eloquent
         $user->toggleStatus();
 
-        // Prepare response message
         $status = $user->isActive() ? 'diaktivasi' : 'diblokir';
         $info = $user->isActive() ? 'dapat login kembali' : 'akan logout otomatis jika sedang login';
         $alertType = $user->isActive() ? 'success' : 'warning';

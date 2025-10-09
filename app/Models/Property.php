@@ -160,4 +160,63 @@ class Property extends Model
     {
         return $this->hasMany(Raffle::class);
     }
+
+    /**
+     * Check if property should be automatically updated to active status
+     */
+    public function shouldBeActive()
+    {
+        return $this->status === 'draft' &&
+            $this->sale_start_date &&
+            now()->gte($this->sale_start_date);
+    }
+
+    /**
+     * Check if property should be automatically updated to pending_draw status
+     */
+    public function shouldBePendingDraw()
+    {
+        return $this->status === 'active' &&
+            $this->sale_end_date &&
+            now()->gte($this->sale_end_date);
+    }
+
+    /**
+     * Update property status automatically based on dates
+     */
+    public function updateStatusAutomatically()
+    {
+        $updated = false;
+
+        if ($this->shouldBeActive()) {
+            $this->update(['status' => 'active']);
+            $updated = true;
+        } elseif ($this->shouldBePendingDraw()) {
+            $this->update(['status' => 'pending_draw']);
+            $updated = true;
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Scope to get properties that need status update
+     */
+    public function scopeNeedsStatusUpdate($query)
+    {
+        $now = now();
+
+        return $query->where(function ($q) use ($now) {
+            // Draft properties that should be active
+            $q->where(function ($subQ) use ($now) {
+                $subQ->where('status', 'draft')
+                    ->where('sale_start_date', '<=', $now);
+            })
+                // Active properties that should be pending_draw
+                ->orWhere(function ($subQ) use ($now) {
+                    $subQ->where('status', 'active')
+                        ->where('sale_end_date', '<=', $now);
+                });
+        });
+    }
 }

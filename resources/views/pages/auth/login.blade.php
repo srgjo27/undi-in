@@ -24,9 +24,10 @@
                             <h5 class="text-primary">Welcome Back</h5>
                         </div>
                         <div class="p-2 mt-4">
+                            
                             @if (session('error'))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <i class="bx bx-error-circle me-2"></i>
+                                    <i class="las la-window-close me-2"></i>
                                     {{ session('error') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
@@ -34,7 +35,7 @@
 
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <i class="fas fa-check-circle me-2"></i>
+                                    <i class="las la-check-circle me-2"></i>
                                     {{ session('success') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>

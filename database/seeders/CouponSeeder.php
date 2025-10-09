@@ -74,7 +74,6 @@ class CouponSeeder extends Seeder
                     'sale_start_date' => now(),
                     'sale_end_date' => now()->addMonths(3),
                     'status' => 'active',
-                    'verification_status' => 'approved',
                 ]);
                 $properties->push($property);
             }

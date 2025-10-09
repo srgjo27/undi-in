@@ -18,7 +18,7 @@
                                 <i class="las la-dice me-2"></i>Manage Raffles
                             </a>
                             <a href="{{ route('admin.coupons.report') }}" class="btn btn-soft-success waves-effect waves-light">
-                                <i class="las la-chart-line me-2"></i>Generate Report
+                                <i class="las la-chart-bar me-2"></i>Generate Report
                             </a>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="card-body">
                         <form method="GET" action="{{ route('admin.coupons.index') }}">
                             <div class="row g-3">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="property_id" class="form-label">Property</label>
                                     <select name="property_id" id="property_id" class="form-select">
                                         <option value="">All Properties</option>
@@ -122,17 +122,17 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <label for="search" class="form-label">Search</label>
                                     <input type="text" name="search" id="search" class="form-control"
                                         placeholder="Search by coupon number or buyer name..."
                                         value="{{ request('search') }}">
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label class="form-label">&nbsp;</label>
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-search me-1"></i>Filter
+                                            <i class="las la-search me-1"></i>Filter
                                         </button>
                                         <a href="{{ route('admin.coupons.index') }}" class="btn btn-outline-secondary">
                                             Reset
@@ -232,11 +232,11 @@
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('admin.coupons.show', $coupon) }}"
                                                         class="btn btn-sm btn-outline-info">
-                                                        <i class="bx bx-show"></i>
+                                                        <i class="las la-eye"></i>
                                                     </a>
                                                     <a href="{{ route('admin.coupons.raffle-detail', $coupon->property) }}"
                                                         class="btn btn-sm btn-outline-primary">
-                                                        <i class="bx bx-dice-1"></i>
+                                                        <i class="las la-dice"></i>
                                                     </a>
                                                 </div>
                                             </td>
@@ -245,7 +245,7 @@
                                         <tr>
                                             <td colspan="7" class="text-center py-4">
                                                 <div class="text-muted">
-                                                    <i class="fas fa-ticket-alt fa-3x mb-3"></i>
+                                                    <i class="las la-ticket-alt fs-2 mb-3"></i>
                                                     <p>No coupons found</p>
                                                 </div>
                                             </td>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Be;
+namespace App\Http\Controllers\Be\Seller;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
@@ -14,8 +14,24 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class PropertyController extends Controller
 {
     use AuthorizesRequests;
+
+    /**
+     * Update property status automatically on page load
+     */
+    private function updatePropertyStatusIfNeeded()
+    {
+        Property::needsStatusUpdate()
+            ->where('seller_id', Auth::id())
+            ->get()
+            ->each(function ($property) {
+                $property->updateStatusAutomatically();
+            });
+    }
     public function index(Request $request)
     {
+        // Update property status automatically
+        $this->updatePropertyStatusIfNeeded();
+
         $query = Property::where('seller_id', Auth::id())->with(['images', 'orders']);
 
         if ($request->has('status') && $request->status !== '') {
@@ -109,16 +125,20 @@ class PropertyController extends Controller
     {
         $this->authorize('view', $property);
 
-        $property->load(['images', 'orders']);
+        // Update property status automatically
+        $this->updatePropertyStatusIfNeeded();
 
-        return view('pages.seller.properties.show', compact('property'));
+        $property->load(['images', 'orders']);
+        $property->refresh(); // Refresh to get updated status
+
+        return view('pages.be.seller.properties.show', compact('property'));
     }
 
     public function edit(Property $property)
     {
         $this->authorize('update', $property);
 
-        return view('pages.seller.properties.edit', compact('property'));
+        return view('pages.be.seller.properties.edit', compact('property'));
     }
 
     public function update(Request $request, Property $property)

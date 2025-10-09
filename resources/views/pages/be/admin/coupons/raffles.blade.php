@@ -18,7 +18,7 @@
                                 <i class="las la-ticket-alt me-2"></i>View All Coupons
                             </a>
                             <a href="{{ route('admin.coupons.report') }}" class="btn btn-soft-warning waves-effect waves-light">
-                                <i class="las la-chart-line me-2"></i>Coupon Report
+                                <i class="las la-chart-bar me-2"></i>Coupon Report
                             </a>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                     <label class="form-label">&nbsp;</label>
                                     <div class="d-flex gap-2">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-search me-1"></i>Filter
+                                            <i class="las la-search me-1"></i>Filter
                                         </button>
                                         <a href="{{ route('admin.coupons.raffles') }}" class="btn btn-outline-secondary">
                                             Reset
@@ -99,7 +99,7 @@
                                                     @else
                                                         <div class="bg-light me-2 d-flex align-items-center justify-content-center"
                                                             style="width: 50px; height: 40px;">
-                                                            <i class="bx bx-image text-muted"></i>
+                                                            <i class="las la-image text-muted"></i>
                                                         </div>
                                                     @endif
                                                     <div>
@@ -157,20 +157,19 @@
                                                 <div class="btn-group" role="group">
                                                     <a href="{{ route('admin.coupons.raffle-detail', $property) }}"
                                                         class="btn btn-sm btn-outline-info">
-                                                        <i class="bx bx-show me-1"></i>Detail
+                                                        <i class="las la-eye me-1"></i>Detail
                                                     </a>
                                                     @if ($property->raffles->count() === 0 && $property->coupons->count() > 0)
-                                                        @if ($property->verification_status === 'approved')
-                                                            <button class="btn btn-sm btn-outline-success"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#raffleModal{{ $property->id }}">
+                                                        @if ($property->status === 'pending_draw')
+                                                            <button type="button" class="btn btn-sm btn-outline-success"
+                                                                onclick="showRaffleModal({{ $property->id }})">
                                                                 <i class="las la-dice me-1"></i>Conduct Raffle
                                                             </button>
                                                         @else
                                                             <button class="btn btn-sm btn-outline-danger" disabled
-                                                                title="Property must be approved before conducting raffle">
+                                                                title="Property must be in pending_draw status before conducting raffle">
                                                                 <i class="las la-exclamation-triangle me-1"></i>
-                                                                {{ ucfirst($property->verification_status) }}
+                                                                {{ ucfirst($property->status) }}
                                                             </button>
                                                         @endif
                                                     @endif
@@ -179,8 +178,9 @@
                                         </tr>
 
                                         <!-- Raffle Modal -->
-                                        @if ($property->raffles->count() === 0 && $property->coupons->count() > 0 && $property->verification_status === 'approved')
-                                            <div class="modal fade" id="raffleModal{{ $property->id }}" tabindex="-1">
+                                        @if ($property->raffles->count() === 0 && $property->coupons->count() > 0 && $property->status === 'pending_draw')
+                                            <div class="modal fade" id="raffleModal{{ $property->id }}" tabindex="-1" 
+                                                 aria-labelledby="raffleModalLabel{{ $property->id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <form
@@ -188,10 +188,10 @@
                                                             method="POST">
                                                             @csrf
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Conduct Raffle:
+                                                                <h5 class="modal-title" id="raffleModalLabel{{ $property->id }}">Conduct Raffle:
                                                                     {{ $property->title }}</h5>
                                                                 <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal"></button>
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="alert alert-info">
@@ -231,7 +231,7 @@
                                                                     data-bs-dismiss="modal">Cancel</button>
                                                                 <button type="submit" class="btn btn-success"
                                                                     onclick="return confirm('Are you sure you want to conduct this raffle? This action cannot be undone.')">
-                                                                    <i class="fas fa-dice me-1"></i>Conduct Raffle
+                                                                    <i class="las la-dice me-1"></i>Conduct Raffle
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -243,7 +243,7 @@
                                         <tr>
                                             <td colspan="6" class="text-center py-4">
                                                 <div class="text-muted">
-                                                    <i class="fas fa-dice fa-3x mb-3"></i>
+                                                    <i class="las la-dice fs-2 mb-3"></i>
                                                     <p>No properties with coupons found</p>
                                                 </div>
                                             </td>
@@ -265,3 +265,75 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    function showRaffleModal(propertyId) {
+        const modalId = 'raffleModal' + propertyId;
+        const modalElement = document.getElementById(modalId);
+        
+        if (!modalElement) {
+            alert('Modal not found for property ID: ' + propertyId);
+            return;
+        }
+
+        // Simple approach - just add Bootstrap classes and show
+        modalElement.classList.add('show');
+        modalElement.style.display = 'block';
+        modalElement.setAttribute('aria-modal', 'true');
+        modalElement.setAttribute('role', 'dialog');
+        
+        // Add backdrop
+        const backdrop = document.createElement('div');
+        backdrop.className = 'modal-backdrop fade show';
+        backdrop.id = 'backdrop-' + propertyId;
+        document.body.appendChild(backdrop);
+        
+        // Add body class for modal-open
+        document.body.classList.add('modal-open');
+        
+        // Close handlers
+        const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
+        closeButtons.forEach(function(btn) {
+            btn.onclick = function() {
+                closeRaffleModal(propertyId);
+            };
+        });
+        
+        // Close on backdrop click
+        backdrop.onclick = function() {
+            closeRaffleModal(propertyId);
+        };
+    }
+
+    function closeRaffleModal(propertyId) {
+        const modalId = 'raffleModal' + propertyId;
+        const modalElement = document.getElementById(modalId);
+        const backdrop = document.getElementById('backdrop-' + propertyId);
+        
+        if (modalElement) {
+            modalElement.classList.remove('show');
+            modalElement.style.display = 'none';
+            modalElement.removeAttribute('aria-modal');
+            modalElement.removeAttribute('role');
+        }
+        
+        if (backdrop) {
+            backdrop.remove();
+        }
+        
+        document.body.classList.remove('modal-open');
+    }
+
+    // Handle escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const openModals = document.querySelectorAll('.modal.show');
+            openModals.forEach(function(modal) {
+                const id = modal.id.replace('raffleModal', '');
+                closeRaffleModal(id);
+            });
+        }
+    });
+</script>
+@endpush

@@ -3,42 +3,42 @@
         <div class="navbar-header">
             <div class="d-flex">
                 <div class="navbar-brand-box horizontal-logo">
-                    @if(Auth::check())
-                        @if(Auth::user()->role === 'admin')
+                    @if (Auth::check())
+                        @if (Auth::user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
-                        @else
-                            <a href="{{ route('seller.dashboard') }}" class="logo logo-dark">
+                            @else
+                                <a href="{{ route('seller.dashboard') }}" class="logo logo-dark">
                         @endif
                     @else
                         <a href="{{ route('login') }}" class="logo logo-dark">
                     @endif
-                        <span class="logo-sm">
-                            <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
-                        </span>
-                        <span class="logo-lg">
-                            <img src="{{ asset('template/be/dist/default/assets/images/logo-dark.png') }}"
-                                alt="" height="17">
-                        </span>
+                    <span class="logo-sm">
+                        <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
+                            height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{ asset('template/be/dist/default/assets/images/logo-dark.png') }}" alt=""
+                            height="17">
+                    </span>
                     </a>
 
-                    @if(Auth::check())
-                        @if(Auth::user()->role === 'admin')
+                    @if (Auth::check())
+                        @if (Auth::user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
-                        @else
-                            <a href="{{ route('seller.dashboard') }}" class="logo logo-light">
+                            @else
+                                <a href="{{ route('seller.dashboard') }}" class="logo logo-light">
                         @endif
                     @else
                         <a href="{{ route('login') }}" class="logo logo-light">
                     @endif
-                        <span class="logo-sm">
-                            <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
-                                height="22">
-                        </span>
-                        <span class="logo-lg">
-                            <img src="{{ asset('template/be/dist/default/assets/images/logo-light.png') }}"
-                                alt="" height="17">
-                        </span>
+                    <span class="logo-sm">
+                        <img src="{{ asset('template/be/dist/default/assets/images/logo-sm.png') }}" alt=""
+                            height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{ asset('template/be/dist/default/assets/images/logo-light.png') }}" alt=""
+                            height="17">
+                    </span>
                     </a>
                 </div>
                 <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
@@ -55,7 +55,7 @@
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                         id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                         aria-haspopup="true" aria-expanded="false">
-                        <i class='bx bx-shopping-bag fs-22'></i>
+                        <i class='las la-shopping-bag fs-22'></i>
                         <span
                             class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-info">5</span>
                     </button>
@@ -77,7 +77,7 @@
                                 <div class="text-center empty-cart" id="empty-cart">
                                     <div class="avatar-md mx-auto my-3">
                                         <div class="avatar-title bg-soft-info text-info fs-36 rounded-circle">
-                                            <i class='bx bx-cart'></i>
+                                            <i class='las la-shopping-cart'></i>
                                         </div>
                                     </div>
                                     <h5 class="mb-3">Your Cart is Empty!</h5>
@@ -89,8 +89,7 @@
                                             class="me-3 rounded-circle avatar-sm p-2 bg-light" alt="user-pic">
                                         <div class="flex-1">
                                             <h6 class="mt-0 mb-1 fs-14">
-                                                <a href="apps-ecommerce-product-details.html"
-                                                    class="text-reset">Branded
+                                                <a href="apps-ecommerce-product-details.html" class="text-reset">Branded
                                                     T-Shirts</a>
                                             </h6>
                                             <p class="mb-0 fs-12 text-muted">
@@ -222,20 +221,20 @@
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                         data-toggle="fullscreen">
-                        <i class='bx bx-fullscreen fs-22'></i>
+                        <i class='las la-window-maximize fs-22'></i>
                     </button>
                 </div>
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button"
                         class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
-                        <i class='bx bx-moon fs-22'></i>
+                        <i class='las la-moon fs-22'></i>
                     </button>
                 </div>
                 <div class="dropdown topbar-head-dropdown ms-1 header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <i class='bx bx-bell fs-22'></i>
+                        <i class='las la-bell fs-22'></i>
                         <span
                             class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span
                                 class="visually-hidden">unread messages</span></span>
@@ -284,7 +283,7 @@
                                         <div class="d-flex">
                                             <div class="avatar-xs me-3">
                                                 <span class="avatar-title bg-soft-info text-info rounded-circle fs-16">
-                                                    <i class="bx bx-badge-check"></i>
+                                                    <i class="las la-id-badge"></i>
                                                 </span>
                                             </div>
                                             <div class="flex-1">
@@ -345,7 +344,7 @@
                                             <div class="avatar-xs me-3">
                                                 <span
                                                     class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
-                                                    <i class='bx bx-message-square-dots'></i>
+                                                    <i class='lab la-rocketchat'></i>
                                                 </span>
                                             </div>
                                             <div class="flex-1">
@@ -540,8 +539,10 @@
                                 src="{{ asset('template/be/dist/default/assets/images/users/avatar-1.jpg') }}"
                                 alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ ucfirst(Auth::user()->role) }}</span>
+                                <span
+                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
+                                <span
+                                    class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ ucfirst(Auth::user()->role) }}</span>
                             </span>
                         </span>
                     </button>
@@ -553,13 +554,11 @@
                         <a class="dropdown-item" href="apps-chat.html"><i
                                 class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle">Messages</span></a>
-                        <a class="dropdown-item" href="pages-profile-settings.html"><i
-                                class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle">Settings</span></a>
                         <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-inline">
                             @csrf
-                            <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left;">
-                                <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> 
+                            <button type="submit" class="dropdown-item"
+                                style="border: none; background: none; width: 100%; text-align: left;">
+                                <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                                 <span class="align-middle" data-key="t-logout">Logout</span>
                             </button>
                         </form>

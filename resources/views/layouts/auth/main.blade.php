@@ -14,7 +14,9 @@
             </div>
         </div>
         <div class="auth-page-content">
+
             @yield('content')
+
             <footer class="footer">
                 <div class="container">
                     <div class="row">
@@ -26,6 +28,12 @@
                     </div>
                 </div>
             </footer>
+        </div>
+    </div>
+    <div class="customizer-setting d-none d-md-block">
+        <div class="btn-info btn-rounded shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle=""
+            data-bs-target="" aria-controls="">
+            <i class='ri-user-voice-line fs-16'></i>
         </div>
     </div>
     @include('layouts.auth.scripts')
