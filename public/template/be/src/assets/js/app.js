@@ -1236,10 +1236,19 @@ File: Main Js File
                                 e.innerHTML = dropdownItemCart;
                             });
                         updateCartPrice();
-                        document.getElementById("empty-cart").style.display =
-                            dropdownItemCart == 0 ? "block" : "none";
-                        document.getElementById("checkout-elem").style.display =
-                            dropdownItemCart == 0 ? "none" : "block";
+                        var emptyCartElement =
+                            document.getElementById("empty-cart");
+                        if (emptyCartElement) {
+                            emptyCartElement.style.display =
+                                dropdownItemCart == 0 ? "block" : "none";
+                        }
+
+                        var checkoutElement =
+                            document.getElementById("checkout-elem");
+                        if (checkoutElement) {
+                            checkoutElement.style.display =
+                                dropdownItemCart == 0 ? "none" : "block";
+                        }
                     });
                 });
             document
@@ -1247,8 +1256,15 @@ File: Main Js File
                 .forEach(function (e) {
                     e.innerHTML = dropdownItemCart;
                 });
-            document.getElementById("empty-cart").style.display = "none";
-            document.getElementById("checkout-elem").style.display = "block";
+            var emptyCartElement = document.getElementById("empty-cart");
+            if (emptyCartElement) {
+                emptyCartElement.style.display = "none";
+            }
+
+            var checkoutElement = document.getElementById("checkout-elem");
+            if (checkoutElement) {
+                checkoutElement.style.display = "block";
+            }
 
             function updateCartPrice() {
                 var currencySign = "$";
@@ -1258,8 +1274,13 @@ File: Main Js File
                     .forEach(function (e) {
                         subtotal += parseFloat(e.innerHTML);
                     });
-                document.getElementById("cart-item-total").innerHTML =
-                    currencySign + subtotal.toFixed(2);
+
+                var checkoutCartItemTotal =
+                    document.getElementById("cart-item-total");
+                if (checkoutCartItemTotal) {
+                    checkoutCartItemTotal.innerHTML =
+                        currencySign + subtotal.toFixed(2);
+                }
             }
             updateCartPrice();
         }

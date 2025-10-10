@@ -113,4 +113,54 @@ class User extends Authenticatable
         $this->email_verified_at = $this->isActive() ? null : now();
         $this->save();
     }
+
+    /**
+     * Get all conversations the user participates in
+     */
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->withPivot(['joined_at', 'last_read_at', 'is_active'])
+            ->wherePivot('is_active', true)
+            ->orderBy('last_activity', 'desc')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get messages sent by this user
+     */
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    /**
+     * Get conversations created by this user
+     */
+    public function createdConversations()
+    {
+        return $this->hasMany(Conversation::class, 'created_by');
+    }
+
+    /**
+     * Get total unread messages count for this user
+     */
+    public function getTotalUnreadMessages(): int
+    {
+        try {
+            return $this->conversations->sum(function ($conversation) {
+                return $conversation->getUnreadCount($this->id);
+            });
+        } catch (\Exception $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Accessor for phone attribute (for compatibility)
+     */
+    public function getPhoneAttribute()
+    {
+        return $this->phone_number;
+    }
 }

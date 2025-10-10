@@ -14,6 +14,7 @@
         </div>
     </div>
     <!-- End layout-wrapper -->
+    @include('layouts.be.user-profile-canvas')
     @include('layouts.be.theme-setting')
     @include('layouts.be.scripts')
 </body>
