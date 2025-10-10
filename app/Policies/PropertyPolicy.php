@@ -17,12 +17,12 @@ class PropertyPolicy
 
     public function view(User $user, Property $property)
     {
-        return $user->role === 'admin' || $user->id === $property->seller_id;
+        return $user->isAdmin() || $user->id === $property->seller_id;
     }
 
     public function create(User $user)
     {
-        return $user->role === 'seller';
+        return $user->isSeller();
     }
 
     public function update(User $user, Property $property)

@@ -27,7 +27,7 @@
                                 <div class="carousel-inner">
                                     @foreach ($property->images as $index => $image)
                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                            <img src="{{ Storage::url($image->image_path) }}"
+                                            <img src="{{ $image->image_url }}"
                                                 class="d-block w-100 property-main-image"
                                                 alt="{{ $image->caption ?: $property->title }}">
                                             @if ($image->caption)

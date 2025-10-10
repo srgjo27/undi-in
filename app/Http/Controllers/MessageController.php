@@ -224,7 +224,7 @@ class MessageController extends Controller
         $user = Auth::user();
 
         $users = User::where('id', '!=', $user->id)
-            ->where('email_verified_at', '!=', null) // Only active users
+            ->where('email_verified_at', '!=', null)
             ->select('id', 'name', 'email', 'role', 'phone_number', 'address')
             ->orderBy('name')
             ->get();

@@ -63,8 +63,8 @@ class AdminDashboardController extends Controller
             'cancelled_properties' => Property::where('status', 'cancelled')->count(),
 
             'total_orders' => Order::count(),
-            'completed_orders' => Order::where('status', 'completed')->count(),
-            'pending_orders' => Order::where('status', 'pending')->count(),
+            'completed_orders' => Order::completed()->count(),
+            'pending_orders' => Order::byStatus('pending')->count(),
 
             'total_transactions' => Transaction::count(),
             'successful_transactions' => Transaction::where('status', 'success')->count(),

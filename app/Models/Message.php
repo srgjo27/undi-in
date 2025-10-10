@@ -76,16 +76,4 @@ class Message extends Model
             ]);
         }
     }
-
-    /**
-     * Format message for display
-     */
-    public function getFormattedContentAttribute(): string
-    {
-        if ($this->is_deleted) {
-            return '<em>This message was deleted</em>';
-        }
-
-        return $this->content;
-    }
 }
