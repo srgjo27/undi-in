@@ -19,7 +19,6 @@ class MessageController extends Controller
     {
         $user = Auth::user();
 
-        // Get user's conversations with unread count
         $conversations = $user->conversations()
             ->with([
                 'activeParticipants' => function ($query) use ($user) {
@@ -34,9 +33,8 @@ class MessageController extends Controller
                 return $conversation;
             });
 
-        // Get all users that current user can chat with (excluding themselves)
         $availableUsers = User::where('id', '!=', $user->id)
-            ->where('email_verified_at', '!=', null) // Only active users
+            ->where('email_verified_at', '!=', null)
             ->select('id', 'name', 'email', 'role', 'phone_number', 'address')
             ->orderBy('name')
             ->get();
@@ -60,15 +58,12 @@ class MessageController extends Controller
             return response()->json(['error' => 'Cannot start conversation with yourself'], 400);
         }
 
-        // Check if private conversation already exists
         $conversation = Conversation::findPrivateConversation($currentUserId, $targetUserId);
 
         if (!$conversation) {
-            // Create new private conversation
             $conversation = Conversation::createPrivateConversation($currentUserId, $targetUserId);
         }
 
-        // Load the conversation with necessary relationships
         $conversation->load([
             'activeParticipants' => function ($query) use ($currentUserId) {
                 $query->select('users.id', 'users.name', 'users.email', 'users.role', 'users.phone_number', 'users.address')
@@ -94,15 +89,12 @@ class MessageController extends Controller
     {
         $user = Auth::user();
 
-        // Check if user is participant
         if (!$conversation->hasParticipant($user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Mark messages as read
         $conversation->markAsRead($user->id);
 
-        // Get messages with sender info
         $messages = $conversation->messages()
             ->with('sender:id,name,role')
             ->notDeleted()
@@ -121,7 +113,7 @@ class MessageController extends Controller
             'conversation' => [
                 'id' => $conversation->id,
                 'active_participants' => $conversation->activeParticipants,
-                'participants' => $conversation->activeParticipants, // For backward compatibility
+                'participants' => $conversation->activeParticipants,
             ]
         ]);
     }
@@ -137,14 +129,12 @@ class MessageController extends Controller
 
         $user = Auth::user();
 
-        // Check if user is participant
         if (!$conversation->hasParticipant($user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
         DB::beginTransaction();
         try {
-            // Create new message
             $message = Message::create([
                 'conversation_id' => $conversation->id,
                 'sender_id' => $user->id,
@@ -152,12 +142,10 @@ class MessageController extends Controller
                 'type' => 'text'
             ]);
 
-            // Update conversation last activity
             $conversation->updateLastActivity();
 
             DB::commit();
 
-            // Load sender relationship
             $message->load('sender:id,name,role');
 
             return response()->json([
@@ -181,12 +169,10 @@ class MessageController extends Controller
 
         $user = Auth::user();
 
-        // Check if user owns the message
         if ($message->sender_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Check if message is editable
         if (!$message->isEditable()) {
             return response()->json(['error' => 'Message cannot be edited'], 400);
         }
@@ -206,7 +192,6 @@ class MessageController extends Controller
     {
         $user = Auth::user();
 
-        // Check if user owns the message
         if ($message->sender_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
@@ -244,7 +229,6 @@ class MessageController extends Controller
         $user = Auth::user();
         $query = $request->query;
 
-        // Search in user's conversations
         $conversations = $user->conversations()
             ->with(['activeParticipants' => function ($q) use ($query, $user) {
                 $q->select('users.id', 'users.name', 'users.email', 'users.role', 'users.phone_number', 'users.address')
@@ -256,7 +240,6 @@ class MessageController extends Controller
                 return $conversation->activeParticipants->isNotEmpty();
             });
 
-        // Search available users to start new conversations
         $availableUsers = User::where('id', '!=', $user->id)
             ->where('email_verified_at', '!=', null)
             ->where('name', 'like', "%{$query}%")

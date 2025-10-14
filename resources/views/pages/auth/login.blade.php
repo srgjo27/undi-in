@@ -24,13 +24,45 @@
                             <h5 class="text-primary">Welcome Back</h5>
                         </div>
                         <div class="p-2 mt-4">
-                            
+
                             @if (session('error'))
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <i class="las la-window-close me-2"></i>
-                                    {{ session('error') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
+                                @if (str_contains(session('error'), 'blocked by administrator'))
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0">
+                                                <i class="las la-user-lock fs-20 text-warning"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h6 class="alert-heading mb-2">Account Blocked</h6>
+                                                <p class="mb-2">{{ session('error') }}</p>
+                                                <hr class="my-2">
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#contactAdminModal">
+                                                        <i class="las la-envelope me-1"></i>
+                                                        Contact Admin
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-warning btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#contactMethodsModal">
+                                                        <i class="las la-phone me-1"></i>
+                                                        Other Contact Methods
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted d-block mt-2">
+                                                    <i class="las la-info-circle me-1"></i>
+                                                    Admin typically responds within 24-48 hours
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                @else
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="las la-exclamation-circle me-2"></i>
+                                        {{ session('error') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                @endif
                             @endif
 
                             @if (session('success'))

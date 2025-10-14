@@ -8,6 +8,7 @@ use App\Http\Controllers\Be\Seller;
 use App\Http\Controllers\Be\Admin;
 use App\Http\Controllers\Web\BuyerDashboardController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ContactController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -16,13 +17,14 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'store']);
 });
 
+Route::post('/contact-admin', [ContactController::class, 'submitContactForm'])->name('contact.admin');
+
 Route::middleware(['auth', 'checkstatus'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
-    // Messaging routes
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('index');
         Route::post('/conversations', [MessageController::class, 'startConversation'])->name('start-conversation');

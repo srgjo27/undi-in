@@ -61,10 +61,17 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            if (!$user->email_verified_at) {
+                return back()->with('error', 'Your account has been blocked by administrator. Please contact support for assistance.')->onlyInput('email');
+            }
+
+            Auth::login($user, $request->filled('remember'));
             $request->session()->regenerate();
 
-            return $this->redirectBasedOnRole(Auth::user());
+            return $this->redirectBasedOnRole($user);
         }
 
         return back()->withErrors([
