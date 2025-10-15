@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Be\AdminDashboardController;
 use App\Http\Controllers\Be\ProfileController;
 use App\Http\Controllers\Be\Seller;
@@ -16,6 +17,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'store']);
 });
+
+Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->name('verification.send');
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
 
 Route::post('/contact-admin', [ContactController::class, 'submitContactForm'])->name('contact.admin');
 

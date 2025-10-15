@@ -11,6 +11,7 @@
 <script src="{{ asset('template/be/dist/default/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/libs/glightbox/js/glightbox.min.js') }}"></script>
 <script src="{{ asset('template/be/dist/default/assets/libs/fg-emoji-picker/fgEmojiPicker.js') }}"></script>
+
 @if(!request()->routeIs('messages.*'))
 <script src="{{ asset('template/be/dist/default/assets/js/pages/chat.init.js') }}"></script>
 @endif
@@ -19,25 +20,20 @@
 
 <script src="{{ asset('template/be/src/assets/js/app.js') }}"></script>
 
-<!-- Message notification updater -->
 <script>
 $(document).ready(function() {
-    // Only run notification updater if we have the required elements
     if ($('#page-header-notifications-dropdown').length === 0) {
         return;
     }
     
-    // Update message notification count every 30 seconds
     function updateMessageNotifications() {
         $.get('{{ route("messages.unread-count") }}', function(data) {
             const count = data.unread_count;
             
-            // Update bell notification badge
             const bellBadge = $('.topbar-badge');
             const messageBadge = $('.btn-topbar .topbar-badge');
             
             if (count > 0) {
-                // Update bell notification
                 if (bellBadge.length) {
                     bellBadge.text(count > 99 ? '99+' : count).show();
                 } else {
@@ -49,7 +45,6 @@ $(document).ready(function() {
                     );
                 }
                 
-                // Update message icon badge
                 const messageIcon = $('.btn-topbar .las.la-envelope').parent();
                 const existingBadge = messageIcon.find('.topbar-badge');
                 if (existingBadge.length) {
@@ -63,11 +58,8 @@ $(document).ready(function() {
                     );
                 }
                 
-                // Update notification header
-                $('.dropdown-tabs .badge').text(count + ' Baru');
-                
+                $('.dropdown-tabs .badge').text(count + ' Baru');         
             } else {
-                // Hide badges when no unread messages
                 bellBadge.hide();
                 $('.btn-topbar .topbar-badge').remove();
                 $('.dropdown-tabs .badge').text('');
@@ -77,11 +69,9 @@ $(document).ready(function() {
         });
     }
     
-    // Update immediately and then every 30 seconds
     updateMessageNotifications();
     setInterval(updateMessageNotifications, 30000);
     
-    // Also update when message page is focused (user comes back to tab)
     $(window).on('focus', function() {
         updateMessageNotifications();
     });

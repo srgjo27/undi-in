@@ -23,7 +23,7 @@ class AdminDashboardController extends Controller
             return $this->sellerDashboard();
         }
 
-        return view('pages.web.index');
+        return view('welcome');
     }
 
     private function sellerDashboard()
@@ -48,7 +48,6 @@ class AdminDashboardController extends Controller
 
     private function adminDashboard()
     {
-        // Overall statistics
         $stats = [
             'total_users' => User::count(),
             'total_sellers' => User::where('role', 'seller')->count(),
@@ -74,13 +73,11 @@ class AdminDashboardController extends Controller
             'winner_coupons' => Coupon::where('is_winner', true)->count(),
         ];
 
-        // Recent activities
         $recent_users = User::orderBy('created_at', 'desc')->limit(5)->get();
         $recent_properties = Property::with('seller')->orderBy('created_at', 'desc')->limit(5)->get();
         $recent_transactions = Transaction::with(['order.buyer', 'order.property'])
             ->orderBy('created_at', 'desc')->limit(5)->get();
 
-        // Charts data
         $monthly_revenue = Transaction::where('status', 'success')
             ->select(
                 DB::raw('YEAR(created_at) as year'),

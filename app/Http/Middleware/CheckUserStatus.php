@@ -16,17 +16,15 @@ class CheckUserStatus
     {
         $user = $request->user();
 
-        // If user is authenticated but blocked (email_verified_at is null)
-        if ($user && !$user->email_verified_at) {
-            // Logout the blocked user
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            auth()->guard('web')->logout();
+        if ($user && !$user->hasVerifiedEmail()) {
+            session(['unverified_user_id' => $user->id]);
 
-            // Redirect with error message
-            return redirect()->route('login')->with(
+            auth()->guard('web')->logout();
+            $request->session()->regenerate();
+
+            return redirect()->route('verification.notice')->with(
                 'error',
-                'Your account has been blocked by administrator. Please contact support for assistance.'
+                'Silakan verifikasi email Anda terlebih dahulu sebelum mengakses halaman ini.'
             );
         }
 

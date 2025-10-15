@@ -14,17 +14,13 @@
         const sendButton = document.getElementById('sendContactForm');
         const contactModal = document.getElementById('contactAdminModal');
 
-        // When blocked user clicks contact admin, pre-fill the form
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('blocked') === '1') {
-            // Pre-select account blocked subject
             document.getElementById('contactSubject').value = 'account_blocked';
-            // Pre-fill message for blocked account
             document.getElementById('contactMessage').value =
                 'My account has been blocked and I cannot log in. Please review my account and restore access if appropriate. Thank you.';
         }
 
-        // Handle contact form submission
         if (sendButton) {
             sendButton.addEventListener('click', function() {
                 if (!contactForm.checkValidity()) {
@@ -34,11 +30,9 @@
 
                 const formData = new FormData(contactForm);
 
-                // Disable button and show loading
                 sendButton.disabled = true;
                 sendButton.innerHTML = '<i class="las la-spinner la-spin me-1"></i>Sending...';
 
-                // Get CSRF token
                 const csrfToken = document.querySelector('meta[name="csrf-token"]');
 
                 fetch('/contact-admin', {
@@ -75,7 +69,6 @@
             });
         }
 
-        // Show alert function
         function showAlert(type, message) {
             const existingAlerts = document.querySelectorAll('.modal-body .alert');
             existingAlerts.forEach(alert => alert.remove());
@@ -88,29 +81,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
 
-            // Insert at top of modal body
             const modalBody = contactModal.querySelector('.modal-body');
             modalBody.insertBefore(alertDiv, modalBody.firstChild);
         }
 
-        // Add "View Alternative Contact Methods" button after form
         const modalFooter = contactModal.querySelector('.modal-footer');
         const altContactBtn = document.createElement('button');
+
         altContactBtn.type = 'button';
         altContactBtn.className = 'btn btn-outline-info me-auto';
         altContactBtn.innerHTML = '<i class="las la-phone me-1"></i>Alternative Methods';
         altContactBtn.setAttribute('data-bs-toggle', 'modal');
-
-        // Insert before the cancel button
         modalFooter.insertBefore(altContactBtn, modalFooter.firstChild);
-
-        // Handle alternative contact methods modal
         altContactBtn.addEventListener('click', function() {
-            // Close the first modal
             const modal = bootstrap.Modal.getInstance(contactModal);
             modal.hide();
 
-            // Open alternative methods modal
             setTimeout(() => {
                 const altModal = new bootstrap.Modal(document.getElementById(
                     'contactMethodsModal'));

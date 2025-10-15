@@ -43,9 +43,11 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        Auth::login($user);
+        $user->sendEmailVerificationNotification();
 
-        return $this->redirectBasedOnRole($user);
+        session(['unverified_user_id' => $user->id]);
+
+        return redirect()->route('verification.notice')->with('success', 'Akun berhasil dibuat! Silakan cek email Anda untuk verifikasi akun.');
     }
 
     /**
@@ -65,7 +67,9 @@ class AuthController extends Controller
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
             if (!$user->email_verified_at) {
-                return back()->with('error', 'Your account has been blocked by administrator. Please contact support for assistance.')->onlyInput('email');
+                session(['unverified_user_id' => $user->id]);
+
+                return redirect()->route('verification.notice')->with('error', 'Silakan verifikasi email Anda terlebih dahulu sebelum masuk.');
             }
 
             Auth::login($user, $request->filled('remember'));

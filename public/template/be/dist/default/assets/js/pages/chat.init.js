@@ -1,13 +1,9 @@
 (function () {
     if (window.location.pathname.includes("/messages")) {
-        console.log("Chat.init.js: Skipping execution on messages page");
         return;
     }
 
     if (!document.querySelector(".chat-conversation-list")) {
-        console.log(
-            "Chat.init.js: Required elements not found, skipping initialization"
-        );
         return;
     }
 
