@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->decimal('price', 15, 2)->after('facilities')->comment('Property building price');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->string('gateway_order_id')->nullable()->after('payment_token');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->dropColumn('price');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('gateway_order_id');
         });
     }
 };

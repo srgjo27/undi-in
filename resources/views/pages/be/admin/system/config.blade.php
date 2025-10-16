@@ -11,7 +11,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 class="page-title">System Configuration</h1>
-                            <p class="text-muted">Konfigurasi pengaturan sistem dan payment gateway</p>
+                            <p class="text-muted">Konfigurasi pengaturan sistem dan aplikasi</p>
                         </div>
                     </div>
                 </div>
@@ -135,102 +135,7 @@
                     </div>
                 </div>
 
-                <!-- Payment Gateway Settings -->
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="card-title">Payment Gateway Settings</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="payment_gateway" class="form-label">Active Payment Gateway</label>
-                                <select name="payment_gateway" id="payment_gateway"
-                                    class="form-select @error('payment_gateway') is-invalid @enderror" required>
-                                    <option value="manual"
-                                        {{ old('payment_gateway', $config['payment']['gateway'] ?? 'manual') === 'manual' ? 'selected' : '' }}>
-                                        Manual Transfer</option>
-                                    <option value="midtrans"
-                                        {{ old('payment_gateway', $config['payment']['gateway'] ?? 'manual') === 'midtrans' ? 'selected' : '' }}>
-                                        Midtrans</option>
-                                    <option value="xendit"
-                                        {{ old('payment_gateway', $config['payment']['gateway'] ?? 'manual') === 'xendit' ? 'selected' : '' }}>
-                                        Xendit</option>
-                                </select>
-                                @error('payment_gateway')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Midtrans Settings -->
-                            <div id="midtrans-settings" style="display: none;">
-                                <h6 class="border-bottom pb-2 mb-3">Midtrans Configuration</h6>
-                                <div class="mb-3">
-                                    <label for="midtrans_server_key" class="form-label">Server Key</label>
-                                    <input type="text" name="midtrans_server_key" id="midtrans_server_key"
-                                        class="form-control @error('midtrans_server_key') is-invalid @enderror"
-                                        value="{{ old('midtrans_server_key', $config['payment']['midtrans']['server_key'] ?? '') }}">
-                                    @error('midtrans_server_key')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="midtrans_client_key" class="form-label">Client Key</label>
-                                    <input type="text" name="midtrans_client_key" id="midtrans_client_key"
-                                        class="form-control @error('midtrans_client_key') is-invalid @enderror"
-                                        value="{{ old('midtrans_client_key', $config['payment']['midtrans']['client_key'] ?? '') }}">
-                                    @error('midtrans_client_key')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" name="midtrans_is_production"
-                                        id="midtrans_is_production" value="1"
-                                        {{ old('midtrans_is_production', $config['payment']['midtrans']['is_production'] ?? false) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="midtrans_is_production">
-                                        Production Mode
-                                    </label>
-                                </div>
-
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    onclick="testPaymentGateway('midtrans')">
-                                    <i class="las la-plug me-1"></i>Test Connection
-                                </button>
-                            </div>
-
-                            <!-- Xendit Settings -->
-                            <div id="xendit-settings" style="display: none;">
-                                <h6 class="border-bottom pb-2 mb-3">Xendit Configuration</h6>
-                                <div class="mb-3">
-                                    <label for="xendit_secret_key" class="form-label">Secret Key</label>
-                                    <input type="text" name="xendit_secret_key" id="xendit_secret_key"
-                                        class="form-control @error('xendit_secret_key') is-invalid @enderror"
-                                        value="{{ old('xendit_secret_key', $config['payment']['xendit']['secret_key'] ?? '') }}">
-                                    @error('xendit_secret_key')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="xendit_public_key" class="form-label">Public Key</label>
-                                    <input type="text" name="xendit_public_key" id="xendit_public_key"
-                                        class="form-control @error('xendit_public_key') is-invalid @enderror"
-                                        value="{{ old('xendit_public_key', $config['payment']['xendit']['public_key'] ?? '') }}">
-                                    @error('xendit_public_key')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    onclick="testPaymentGateway('xendit')">
-                                    <i class="las la-plug me-1"></i>Test Connection
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Raffle Settings -->
+                <!-- Raffle Settings -->
                     <div class="card mb-4">
                         <div class="card-header">
                             <h5 class="card-title">Raffle Settings</h5>
@@ -282,59 +187,5 @@
         </form>
     </div>
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const paymentGateway = document.getElementById('payment_gateway');
-                const midtransSettings = document.getElementById('midtrans-settings');
-                const xenditSettings = document.getElementById('xendit-settings');
 
-                function togglePaymentSettings() {
-                    const selected = paymentGateway.value;
-
-                    // Hide all settings
-                    midtransSettings.style.display = 'none';
-                    xenditSettings.style.display = 'none';
-
-                    // Show selected settings
-                    if (selected === 'midtrans') {
-                        midtransSettings.style.display = 'block';
-                    } else if (selected === 'xendit') {
-                        xenditSettings.style.display = 'block';
-                    }
-                }
-
-                // Initial toggle
-                togglePaymentSettings();
-
-                // Listen for changes
-                paymentGateway.addEventListener('change', togglePaymentSettings);
-            });
-
-            function testPaymentGateway(gateway) {
-                fetch('{{ route('admin.system.test-payment') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            gateway: gateway
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('✅ ' + data.message);
-                        } else {
-                            alert('❌ ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('❌ Connection test failed');
-                    });
-            }
-        </script>
-    @endpush
 @endsection

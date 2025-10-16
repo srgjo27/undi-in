@@ -24,6 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'phone_number',
         'address',
+        'bank_name',
+        'bank_account_number',
+        'bank_account_name',
     ];
 
     /**
@@ -162,5 +165,31 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getPhoneAttribute()
     {
         return $this->phone_number;
+    }
+
+    /**
+     * Check if seller has complete bank account information
+     */
+    public function hasCompleteBankInfo()
+    {
+        return !empty($this->bank_name) &&
+            !empty($this->bank_account_number) &&
+            !empty($this->bank_account_name);
+    }
+
+    /**
+     * Get formatted bank account info for display
+     */
+    public function getBankAccountInfoAttribute()
+    {
+        if (!$this->hasCompleteBankInfo()) {
+            return null;
+        }
+
+        return [
+            'bank_name' => $this->bank_name,
+            'account_number' => $this->bank_account_number,
+            'account_name' => $this->bank_account_name,
+        ];
     }
 }

@@ -341,7 +341,6 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Inisialisasi Elemen ---
             const selectAllHeader = document.getElementById('selectAllHeader');
             const selectAllBulk = document.getElementById('selectAll');
             const itemCheckboxes = document.querySelectorAll('input[name="property_ids[]"]');
@@ -349,7 +348,6 @@
             const bulkActionForm = document.getElementById('bulkActionForm');
             const allSelectAllCheckboxes = [selectAllHeader, selectAllBulk];
 
-            // --- Fungsi Logika (Tidak ada perubahan di sini) ---
             function toggleBulkActionButton() {
                 const checkedItemsCount = document.querySelectorAll('input[name="property_ids[]"]:checked').length;
                 bulkActionBtn.disabled = checkedItemsCount === 0;
@@ -362,7 +360,6 @@
                 allSelectAllCheckboxes.forEach(cb => cb.checked = allChecked);
             }
 
-            // --- Event Listeners (Tidak ada perubahan di sini) ---
             allSelectAllCheckboxes.forEach(selectAllCheckbox => {
                 selectAllCheckbox.addEventListener('change', function() {
                     itemCheckboxes.forEach(item => {
@@ -380,39 +377,28 @@
                 });
             });
 
-            // =======================================================
-            // ==> PERUBAHAN UTAMA ADA DI SINI <==
-            // =======================================================
-            // Event listener BARU untuk form submission
             bulkActionForm.addEventListener('submit', function(e) {
-                // 1. Hentikan pengiriman form otomatis
                 e.preventDefault();
 
-                // 2. Validasi dropdown aksi
                 const actionSelect = this.querySelector('select[name="status"]');
                 if (actionSelect.value === "") {
                     alert('Silakan pilih salah satu aksi masal (Bulk Action) terlebih dahulu.');
-                    return; // Hentikan proses jika tidak ada aksi dipilih
+                    return;
                 }
 
-                // 3. Cari semua checkbox item yang tercentang
                 const checkedItems = document.querySelectorAll('input[name="property_ids[]"]:checked');
 
-                // 4. Buat dan sisipkan <input type="hidden"> untuk setiap item yang tercentang
                 checkedItems.forEach(item => {
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
                     hiddenInput.name = 'property_ids[]';
                     hiddenInput.value = item.value;
-                    this.appendChild(hiddenInput); // Sisipkan ke dalam form
+                    this.appendChild(hiddenInput);
                 });
 
-                // 5. Kirim form yang sudah dilengkapi dengan data ID
                 this.submit();
             });
 
-
-            // Panggil fungsi saat halaman pertama kali dimuat
             toggleBulkActionButton();
         });
     </script>

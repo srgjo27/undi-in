@@ -68,6 +68,11 @@ class Property extends Model
         return $this->belongsTo(User::class, 'seller_id');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->seller();
+    }
+
     public function images(): HasMany
     {
         return $this->hasMany(PropertyImage::class);
@@ -207,16 +212,54 @@ class Property extends Model
         $now = now();
 
         return $query->where(function ($q) use ($now) {
-            // Draft properties that should be active
             $q->where(function ($subQ) use ($now) {
                 $subQ->where('status', 'draft')
                     ->where('sale_start_date', '<=', $now);
             })
-                // Active properties that should be pending_draw
                 ->orWhere(function ($subQ) use ($now) {
                     $subQ->where('status', 'active')
                         ->where('sale_end_date', '<=', $now);
                 });
         });
+    }
+
+    /**
+     * Check if property has available coupons for purchase
+     */
+    public function hasAvailableCoupons($quantity = 1)
+    {
+        if (!$this->max_coupons) {
+            return true;
+        }
+
+        return $this->available_coupons >= $quantity;
+    }
+
+    /**
+     * Validate if quantity can be purchased
+     */
+    public function canPurchaseQuantity($quantity)
+    {
+        if (!$this->max_coupons) {
+            return ['valid' => true];
+        }
+
+        $available = $this->available_coupons;
+
+        if ($available <= 0) {
+            return [
+                'valid' => false,
+                'message' => 'Kuota kupon untuk properti ini sudah habis.'
+            ];
+        }
+
+        if ($quantity > $available) {
+            return [
+                'valid' => false,
+                'message' => "Hanya tersisa {$available} kupon untuk properti ini."
+            ];
+        }
+
+        return ['valid' => true];
     }
 }

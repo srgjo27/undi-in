@@ -7,7 +7,7 @@ use App\Http\Controllers\Be\AdminDashboardController;
 use App\Http\Controllers\Be\ProfileController;
 use App\Http\Controllers\Be\Seller;
 use App\Http\Controllers\Be\Admin;
-use App\Http\Controllers\Web\BuyerDashboardController;
+use App\Http\Controllers\Web;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ContactController;
 
@@ -24,11 +24,14 @@ Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 've
 
 Route::post('/contact-admin', [ContactController::class, 'submitContactForm'])->name('contact.admin');
 
+
+
 Route::middleware(['auth', 'checkstatus'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::patch('/profile/bank', [ProfileController::class, 'updateBankAccount'])->name('profile.bank.update');
 
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('index');
@@ -68,7 +71,6 @@ Route::middleware(['auth', 'checkstatus'])->group(function () {
 
         Route::get('/system/config', [Admin\SystemConfigController::class, 'index'])->name('system.config');
         Route::put('/system/config', [Admin\SystemConfigController::class, 'update'])->name('system.config.update');
-        Route::post('/system/test-payment', [Admin\SystemConfigController::class, 'testPaymentGateway'])->name('system.test-payment');
     });
 
     Route::middleware('checkrole:seller')->prefix('seller')->name('seller.')->group(function () {
@@ -78,10 +80,29 @@ Route::middleware(['auth', 'checkstatus'])->group(function () {
         Route::patch('/properties/{property}/status', [Seller\PropertyController::class, 'updateStatus'])->name('properties.update-status');
         Route::delete('/property-images/{image}', [Seller\PropertyController::class, 'deleteImage'])->name('property-images.destroy');
         Route::patch('/property-images/{image}/set-primary', [Seller\PropertyController::class, 'setPrimaryImage'])->name('property-images.set-primary');
+
+        // Orders management
+        Route::get('/orders', [Seller\OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [Seller\OrderController::class, 'show'])->name('orders.show');
+        Route::get('/orders-awaiting-verification', [Seller\OrderController::class, 'awaitingVerification'])->name('orders.awaiting-verification');
+        Route::post('/orders/{order}/verify-transfer', [Seller\OrderController::class, 'verifyTransfer'])->name('orders.verify-transfer');
+        Route::get('/orders/{order}/transfer-proof', [Seller\OrderController::class, 'showTransferProof'])->name('orders.transfer-proof');
     });
 
     Route::middleware('checkrole:buyer')->prefix('buyer')->name('buyer.')->group(function () {
-        Route::get('/dashboard', [BuyerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/home', [Web\HomeController::class, 'index'])->name('home');
+        Route::get('/properties', [Web\HomeController::class, 'allProperties'])->name('properties.index');
+
+        Route::get('/properties/{property}', [Web\OrderController::class, 'show'])->name('properties.show');
+
+        Route::post('/properties/{property}/order', [Web\OrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders', [Web\OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [Web\OrderController::class, 'orderShow'])->name('orders.show');
+        Route::get('/orders/{order}/payment', [Web\OrderController::class, 'payment'])->name('orders.payment');
+        Route::patch('/orders/{order}/cancel', [Web\OrderController::class, 'cancel'])->name('orders.cancel');
+        Route::post('/orders/{order}/upload-transfer-proof', [Web\OrderController::class, 'uploadTransferProof'])->name('orders.upload-transfer-proof');
+
+        Route::get('/coupons', [Web\OrderController::class, 'coupons'])->name('coupons.index');
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

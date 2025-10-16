@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -16,17 +17,14 @@ class TransactionController extends Controller
     {
         $query = Transaction::with(['order.buyer', 'order.property']);
 
-        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter by payment method
         if ($request->filled('payment_method')) {
             $query->where('payment_method', $request->payment_method);
         }
 
-        // Filter by date range
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
@@ -35,7 +33,6 @@ class TransactionController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // Search by transaction ID or buyer name
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('id', 'like', '%' . $request->search . '%')
@@ -47,13 +44,12 @@ class TransactionController extends Controller
 
         $transactions = $query->orderBy('created_at', 'desc')->paginate(15);
 
-        // Statistics for dashboard
         $stats = [
             'total_transactions' => Transaction::count(),
             'pending_transactions' => Transaction::where('status', 'pending')->count(),
-            'success_transactions' => Transaction::where('status', 'success')->count(),
+            'success_transactions' => Transaction::whereIn('status', ['completed', 'success'])->count(),
             'failed_transactions' => Transaction::where('status', 'failed')->count(),
-            'total_amount' => Transaction::where('status', 'success')->sum('amount'),
+            'total_amount' => Transaction::whereIn('status', ['completed', 'success'])->sum('amount'),
         ];
 
         return view('pages.be.admin.transactions.index', compact('transactions', 'stats'));
@@ -80,7 +76,6 @@ class TransactionController extends Controller
 
         $transaction->update(['status' => $request->status]);
 
-        // Update order status based on transaction status
         if ($request->status === 'success') {
             $transaction->order->update(['payment_status' => 'paid', 'status' => 'completed']);
         } elseif (in_array($request->status, ['failed', 'cancelled'])) {
@@ -96,7 +91,6 @@ class TransactionController extends Controller
      */
     public function report(Request $request)
     {
-        // If no parameters provided, just show the form
         if (!$request->has(['date_from', 'date_to'])) {
             return view('pages.be.admin.transactions.report', compact('request'));
         }
@@ -106,12 +100,17 @@ class TransactionController extends Controller
             'date_to' => ['required', 'date', 'after_or_equal:date_from'],
         ]);
 
-        $transactions = Transaction::with(['order.buyer', 'order.property'])
+        $query = Transaction::with(['order.buyer', 'order.property'])
             ->whereDate('created_at', '>=', $request->date_from)
-            ->whereDate('created_at', '<=', $request->date_to)
-            ->where('status', 'success')
-            ->orderBy('created_at', 'asc')
-            ->get();
+            ->whereDate('created_at', '<=', $request->date_to);
+
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->payment_method);
+        }
+
+        $query->whereIn('status', ['completed', 'success']);
+
+        $transactions = $query->orderBy('created_at', 'asc')->get();
 
         $summary = [
             'total_transactions' => $transactions->count(),

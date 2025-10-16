@@ -31,7 +31,6 @@ class UpdatePropertyStatuses extends Command
 
         $now = Carbon::now();
 
-        // 1. Update properties to 'pending_draw' if sale_end_date has passed and they have coupons but no raffle
         $pendingDrawProperties = Property::where('status', 'active')
             ->where('sale_end_date', '<', $now)
             ->whereHas('coupons')
@@ -43,7 +42,6 @@ class UpdatePropertyStatuses extends Command
             $this->info("Updated property to pending_draw: {$property->title} (ID: {$property->id})");
         }
 
-        // 2. Update properties to 'completed' if they have completed raffles
         $completedProperties = Property::whereHas('raffles', function ($q) {
             $q->where('status', 'completed');
         })->where('status', '!=', 'completed')->get();

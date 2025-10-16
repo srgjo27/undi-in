@@ -64,4 +64,30 @@ class ProfileController extends Controller
 
         return back()->with('password_success', 'Password updated successfully!');
     }
+
+    public function updateBankAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        // Only sellers can update bank account info
+        if (!$user->isSeller()) {
+            abort(403, 'Only sellers can update bank account information.');
+        }
+
+        $validated = $request->validate([
+            'bank_name' => ['required', 'string', 'max:100'],
+            'bank_account_number' => ['required', 'string', 'max:50', 'regex:/^[0-9]+$/'],
+            'bank_account_name' => ['required', 'string', 'max:255'],
+        ], [
+            'bank_name.required' => 'Nama bank wajib diisi',
+            'bank_account_number.required' => 'Nomor rekening wajib diisi',
+            'bank_account_number.regex' => 'Nomor rekening hanya boleh berisi angka',
+            'bank_account_name.required' => 'Nama pemilik rekening wajib diisi',
+            'bank_account_name.max' => 'Nama pemilik rekening maksimal 255 karakter',
+        ]);
+
+        $user->update($validated);
+
+        return back()->with('bank_success', 'Informasi rekening bank berhasil diperbarui!');
+    }
 }

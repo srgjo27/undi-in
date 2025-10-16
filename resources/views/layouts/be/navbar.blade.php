@@ -121,28 +121,13 @@
                                     <a href="{{ route('seller.properties.index') }}" class="nav-link"
                                         data-key="t-my-listings">Daftar Properti</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('seller.properties.index', ['status' => 'completed']) }}"
-                                        class="nav-link" data-key="t-sold-properties">Properti Terjual</a>
-                                </li>
                             </ul>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="#sidebarMySales" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="sidebarMySales">
-                            <i class="ri-money-dollar-circle-line"></i> <span data-key="t-my-sales">My Sales</span>
+                        <a class="nav-link menu-link" href="{{ route('seller.orders.index') }}">
+                            <i class="ri-shopping-cart-2-line"></i> <span data-key="t-my-sales">Orders & Sales</span>
                         </a>
-                        <div class="collapse menu-dropdown" id="sidebarMySales">
-                            <ul class="nav nav-sm flex-column">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-orders">Orders</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link" data-key="t-earnings">Earnings</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                 @endif
             </ul>

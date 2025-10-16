@@ -21,17 +21,14 @@ class CouponController extends Controller
     {
         $query = Coupon::with(['buyer', 'property', 'order']);
 
-        // Filter by property
         if ($request->filled('property_id')) {
             $query->where('property_id', $request->property_id);
         }
 
-        // Filter by winner status
         if ($request->filled('is_winner')) {
             $query->where('is_winner', $request->is_winner);
         }
 
-        // Search by coupon number or buyer name
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('coupon_number', 'like', '%' . $request->search . '%')
@@ -44,7 +41,6 @@ class CouponController extends Controller
         $coupons = $query->orderBy('created_at', 'desc')->paginate(15);
         $properties = Property::where('status', 'active')->get();
 
-        // Calculate statistics for cards
         $totalCoupons = Coupon::count();
         $totalWinners = Coupon::where('is_winner', true)->count();
         $totalProperties = Property::count();
@@ -76,7 +72,6 @@ class CouponController extends Controller
     {
         $query = Property::with(['coupons', 'raffles']);
 
-        // Only show properties that have coupons
         $query->whereHas('coupons');
 
         if ($request->filled('status')) {
@@ -110,7 +105,6 @@ class CouponController extends Controller
      */
     public function conductRaffle(Request $request, Property $property)
     {
-        // SECURITY: Authorization check using Policy
         if (!Gate::allows('conductRaffle', $property)) {
             Log::warning('Unauthorized raffle attempt', [
                 'user_id' => Auth::id(),
@@ -124,7 +118,6 @@ class CouponController extends Controller
                 ->with('error', 'Anda tidak memiliki izin untuk melakukan pengundian pada properti ini.');
         }
 
-        // SECURITY: Log raffle attempt
         Log::info('Raffle conduct attempt initiated', [
             'user_id' => Auth::id(),
             'property_id' => $property->id,
@@ -133,25 +126,21 @@ class CouponController extends Controller
             'coupons_count' => $property->coupons()->count()
         ]);
 
-        // SECURITY: Validate request input
         $request->validate([
             'draw_date' => 'nullable|date|before_or_equal:now',
             'notes' => 'nullable|string|max:1000'
         ]);
 
-        // SECURITY: Additional status check (redundant but safer)
         if ($property->status !== 'active') {
             return redirect()->route('admin.coupons.raffle-detail', $property)
                 ->with('error', 'Pengundian hanya dapat dilakukan pada properti yang aktif. Status saat ini: ' . ucfirst($property->status));
         }
 
-        // Check if raffle already exists
         if ($property->raffles()->exists()) {
             return redirect()->route('admin.coupons.raffle-detail', $property)
                 ->with('error', 'Pengundian untuk properti ini sudah pernah dilakukan.');
         }
 
-        // Get all coupons for this property
         $coupons = $property->coupons()->get();
 
         if ($coupons->count() === 0) {
@@ -161,13 +150,10 @@ class CouponController extends Controller
 
         DB::beginTransaction();
         try {
-            // Select random winner
             $winnerCoupon = $coupons->random();
 
-            // Mark winner
             $winnerCoupon->update(['is_winner' => true]);
 
-            // Create raffle record
             $raffle = Raffle::create([
                 'property_id' => $property->id,
                 'draw_date' => now(),
@@ -177,12 +163,10 @@ class CouponController extends Controller
                 'notes' => "Pengundian dilakukan pada " . now() . " dengan total {$coupons->count()} kupon. Pemenang: {$winnerCoupon->buyer->name} (Kupon: {$winnerCoupon->coupon_number})",
             ]);
 
-            // Update property status to completed after raffle
             $property->update(['status' => 'completed']);
 
             DB::commit();
 
-            // SECURITY: Log successful raffle
             Log::info('Raffle conducted successfully', [
                 'user_id' => Auth::id(),
                 'property_id' => $property->id,
@@ -200,7 +184,6 @@ class CouponController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            // SECURITY: Log raffle error
             Log::error('Raffle conduct failed', [
                 'user_id' => Auth::id(),
                 'property_id' => $property->id,
@@ -219,13 +202,10 @@ class CouponController extends Controller
      */
     public function report(Request $request)
     {
-        // Get all properties
         $properties = Property::all();
 
-        // Build coupon query
         $couponQuery = Coupon::with(['buyer', 'property', 'order']);
 
-        // Apply date filters if provided
         if ($request->filled('date_from')) {
             $couponQuery->whereDate('created_at', '>=', $request->date_from);
         }
@@ -234,14 +214,12 @@ class CouponController extends Controller
             $couponQuery->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // Apply property filter if provided
         if ($request->filled('property_id')) {
             $couponQuery->where('property_id', $request->property_id);
         }
 
         $coupons = $couponQuery->get();
 
-        // Calculate statistics
         $totalCoupons = $coupons->count();
         $totalRevenue = $coupons->sum(function ($coupon) {
             return $coupon->property->coupon_price;
@@ -249,15 +227,12 @@ class CouponController extends Controller
         $activeProperties = Property::where('status', 'active')->count();
         $totalWinners = $coupons->where('is_winner', true)->count();
 
-        // Sales by property - apply same filters as coupons
         $salesQuery = Property::with('raffles');
 
-        // Apply property filter if provided
         if ($request->filled('property_id')) {
             $salesQuery->where('id', $request->property_id);
         }
 
-        // Count coupons with date/property filters
         $salesQuery->withCount(['coupons' => function ($query) use ($request) {
             if ($request->filled('date_from')) {
                 $query->whereDate('created_at', '>=', $request->date_from);
@@ -281,7 +256,6 @@ class CouponController extends Controller
             })
             ->sortByDesc('coupons_count');
 
-        // Top buyers - apply same filters
         $topBuyersQuery = DB::table('coupons')
             ->join('users', 'coupons.buyer_id', '=', 'users.id')
             ->join('properties', 'coupons.property_id', '=', 'properties.id')
@@ -293,7 +267,6 @@ class CouponController extends Controller
                 DB::raw('SUM(properties.coupon_price) as total_spent')
             );
 
-        // Apply date filters
         if ($request->filled('date_from')) {
             $topBuyersQuery->whereDate('coupons.created_at', '>=', $request->date_from);
         }
@@ -301,7 +274,6 @@ class CouponController extends Controller
             $topBuyersQuery->whereDate('coupons.created_at', '<=', $request->date_to);
         }
 
-        // Apply property filter
         if ($request->filled('property_id')) {
             $topBuyersQuery->where('coupons.property_id', $request->property_id);
         }
@@ -312,7 +284,6 @@ class CouponController extends Controller
             ->limit(10)
             ->get();
 
-        // Monthly trends - apply same filters
         $monthlyTrendsQuery = DB::table('coupons')
             ->join('properties', 'coupons.property_id', '=', 'properties.id')
             ->select(
@@ -323,7 +294,6 @@ class CouponController extends Controller
                 DB::raw('SUM(properties.coupon_price) as total_revenue')
             );
 
-        // Apply date filters
         if ($request->filled('date_from')) {
             $monthlyTrendsQuery->whereDate('coupons.created_at', '>=', $request->date_from);
         }
@@ -331,7 +301,6 @@ class CouponController extends Controller
             $monthlyTrendsQuery->whereDate('coupons.created_at', '<=', $request->date_to);
         }
 
-        // Apply property filter
         if ($request->filled('property_id')) {
             $monthlyTrendsQuery->where('coupons.property_id', $request->property_id);
         }
@@ -343,10 +312,8 @@ class CouponController extends Controller
             ->limit(12)
             ->get();
 
-        // Recent sales - apply same filters
         $recentSalesQuery = Coupon::with(['buyer', 'property']);
 
-        // Apply date filters
         if ($request->filled('date_from')) {
             $recentSalesQuery->whereDate('created_at', '>=', $request->date_from);
         }
@@ -354,7 +321,6 @@ class CouponController extends Controller
             $recentSalesQuery->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // Apply property filter
         if ($request->filled('property_id')) {
             $recentSalesQuery->where('property_id', $request->property_id);
         }

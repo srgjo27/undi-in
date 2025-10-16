@@ -17,45 +17,22 @@ class CouponSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get existing users
         $buyers = User::where('role', 'buyer')->get();
 
-        // If no buyers exist, create some
         if ($buyers->count() === 0) {
             $buyers = collect();
-            for ($i = 1; $i <= 5; $i++) {
-                $buyer = User::create([
-                    'name' => "Buyer {$i}",
-                    'email' => "buyer{$i}@example.com",
-                    'password' => bcrypt('password'),
-                    'role' => 'buyer',
-                    'is_active' => true,
-                ]);
-                $buyers->push($buyer);
-            }
         }
 
-        // Get existing properties
         $properties = Property::where('status', 'active')->get();
 
-        // If no properties exist, create some
         if ($properties->count() === 0) {
             $seller = User::where('role', 'seller')->first();
-            if (!$seller) {
-                $seller = User::create([
-                    'name' => 'Sample Seller',
-                    'email' => 'seller@example.com',
-                    'password' => bcrypt('password'),
-                    'role' => 'seller',
-                    'is_active' => true,
-                ]);
-            }
 
             $properties = collect();
             $propertyData = [
-                ['title' => 'Villa Bali Indah', 'city' => 'Denpasar', 'province' => 'Bali', 'coupon_price' => 50000],
-                ['title' => 'Rumah Jakarta Selatan', 'city' => 'Jakarta Selatan', 'province' => 'DKI Jakarta', 'coupon_price' => 35000],
-                ['title' => 'Apartemen Bandung', 'city' => 'Bandung', 'province' => 'Jawa Barat', 'coupon_price' => 25000],
+                ['title' => 'Villa Bali Indah', 'city' => 'Denpasar', 'province' => 'Bali', 'price' => 1000000000, 'coupon_price' => 50000],
+                ['title' => 'Rumah Jakarta Selatan', 'city' => 'Jakarta Selatan', 'province' => 'DKI Jakarta', 'price' => 800000000, 'coupon_price' => 35000],
+                ['title' => 'Apartemen Bandung', 'city' => 'Bandung', 'province' => 'Jawa Barat', 'price' => 600000000, 'coupon_price' => 25000],
             ];
 
             foreach ($propertyData as $data) {
@@ -63,6 +40,7 @@ class CouponSeeder extends Seeder
                     'seller_id' => $seller->id,
                     'title' => $data['title'],
                     'description' => 'Deskripsi properti ' . $data['title'],
+                    'price' => $data['price'],
                     'coupon_price' => $data['coupon_price'],
                     'address' => 'Alamat ' . $data['title'],
                     'city' => $data['city'],
@@ -75,13 +53,12 @@ class CouponSeeder extends Seeder
                     'sale_end_date' => now()->addMonths(3),
                     'status' => 'active',
                 ]);
+
                 $properties->push($property);
             }
         }
 
-        // Create orders and coupons for each property
         foreach ($properties->take(3) as $property) {
-            // Create multiple orders for this property
             $orderCount = rand(3, 8);
 
             for ($i = 0; $i < $orderCount; $i++) {
@@ -89,7 +66,6 @@ class CouponSeeder extends Seeder
                 $quantity = rand(1, 5);
                 $totalPrice = $property->coupon_price * $quantity;
 
-                // Create order
                 $order = Order::create([
                     'buyer_id' => $buyer->id,
                     'property_id' => $property->id,
@@ -100,7 +76,6 @@ class CouponSeeder extends Seeder
                     'paid_at' => now(),
                 ]);
 
-                // Create coupons for this order
                 for ($j = 0; $j < $quantity; $j++) {
                     $couponNumber = $property->id . sprintf('%04d', $property->coupons()->count() + 1);
 

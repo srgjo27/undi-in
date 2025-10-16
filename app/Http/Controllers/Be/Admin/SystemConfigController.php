@@ -30,20 +30,10 @@ class SystemConfigController extends Controller
             'contact_phone' => ['nullable', 'string'],
             'address' => ['nullable', 'string'],
 
-            // Payment Gateway Settings
-            'payment_gateway' => ['required', 'in:midtrans,xendit,manual'],
-            'midtrans_server_key' => ['nullable', 'string'],
-            'midtrans_client_key' => ['nullable', 'string'],
-            'midtrans_is_production' => ['nullable', 'boolean'],
-            'xendit_secret_key' => ['nullable', 'string'],
-            'xendit_public_key' => ['nullable', 'string'],
-
-            // Commission Settings
             'admin_commission_percentage' => ['required', 'numeric', 'min:0', 'max:100'],
             'min_coupon_price' => ['required', 'numeric', 'min:0'],
             'max_coupon_price' => ['required', 'numeric', 'min:0'],
 
-            // Raffle Settings
             'min_coupons_for_raffle' => ['required', 'integer', 'min:1'],
             'raffle_duration_days' => ['required', 'integer', 'min:1'],
         ]);
@@ -58,18 +48,7 @@ class SystemConfigController extends Controller
                 'phone' => $request->contact_phone,
                 'address' => $request->address,
             ],
-            'payment' => [
-                'gateway' => $request->payment_gateway,
-                'midtrans' => [
-                    'server_key' => $request->midtrans_server_key,
-                    'client_key' => $request->midtrans_client_key,
-                    'is_production' => $request->boolean('midtrans_is_production'),
-                ],
-                'xendit' => [
-                    'secret_key' => $request->xendit_secret_key,
-                    'public_key' => $request->xendit_public_key,
-                ],
-            ],
+
             'commission' => [
                 'admin_percentage' => $request->admin_commission_percentage,
                 'min_coupon_price' => $request->min_coupon_price,
@@ -98,7 +77,6 @@ class SystemConfigController extends Controller
             return json_decode(File::get($configFile), true);
         }
 
-        // Default configuration
         return [
             'app' => [
                 'name' => config('app.name', 'Undi In'),
@@ -109,18 +87,7 @@ class SystemConfigController extends Controller
                 'phone' => '+62 123 456 789',
                 'address' => '',
             ],
-            'payment' => [
-                'gateway' => 'manual',
-                'midtrans' => [
-                    'server_key' => '',
-                    'client_key' => '',
-                    'is_production' => false,
-                ],
-                'xendit' => [
-                    'secret_key' => '',
-                    'public_key' => '',
-                ],
-            ],
+
             'commission' => [
                 'admin_percentage' => 10,
                 'min_coupon_price' => 100000,
@@ -141,61 +108,6 @@ class SystemConfigController extends Controller
         $configFile = storage_path('app/system_config.json');
         File::put($configFile, json_encode($config, JSON_PRETTY_PRINT));
 
-        // Clear cache
         Cache::forget('system_config');
-    }
-
-    /**
-     * Test payment gateway connection.
-     */
-    public function testPaymentGateway(Request $request)
-    {
-        $request->validate([
-            'gateway' => ['required', 'in:midtrans,xendit'],
-        ]);
-
-        try {
-            if ($request->gateway === 'midtrans') {
-                // Test Midtrans connection
-                $result = $this->testMidtrans();
-            } elseif ($request->gateway === 'xendit') {
-                // Test Xendit connection
-                $result = $this->testXendit();
-            }
-
-            return response()->json([
-                'success' => $result['success'],
-                'message' => $result['message'],
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    /**
-     * Test Midtrans connection.
-     */
-    private function testMidtrans()
-    {
-        // Implementation for testing Midtrans connection
-        return [
-            'success' => true,
-            'message' => 'Koneksi Midtrans berhasil!'
-        ];
-    }
-
-    /**
-     * Test Xendit connection.
-     */
-    private function testXendit()
-    {
-        // Implementation for testing Xendit connection
-        return [
-            'success' => true,
-            'message' => 'Koneksi Xendit berhasil!'
-        ];
     }
 }

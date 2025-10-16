@@ -12,10 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('properties', function (Blueprint $table) {
-            // Add notes column
             $table->text('notes')->nullable()->after('status');
-
-            // Drop verification columns
             $table->dropColumn(['verification_status', 'verification_notes']);
         });
     }

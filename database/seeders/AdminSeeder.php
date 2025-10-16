@@ -14,7 +14,6 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
         User::create([
             'name' => 'Admin Undi In',
             'email' => 'admin@undiin.com',
@@ -25,7 +24,6 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // Create sample seller
         User::create([
             'name' => 'John Seller',
             'email' => 'seller@undiin.com',
@@ -36,7 +34,6 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // Create sample buyer
         User::create([
             'name' => 'Jane Buyer',
             'email' => 'buyer@undiin.com',

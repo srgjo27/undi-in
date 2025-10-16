@@ -59,6 +59,14 @@
                                 Change Password
                             </a>
                         </li>
+                        @if(Auth::user()->isSeller())
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#bankAccount" role="tab">
+                                <i class="las la-university"></i>
+                                Bank Account
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -238,6 +246,112 @@
                                 </div>
                             </form>
                         </div>
+                        @if(Auth::user()->isSeller())
+                        <div class="tab-pane" id="bankAccount" role="tabpanel">
+                            @if (session('bank_success'))
+                                <div class="alert alert-success alert-border-left alert-dismissible fade show"
+                                    role="alert">
+                                    <i class="ri-check-line me-3 align-middle fs-16"></i><strong>Success!</strong>
+                                    {{ session('bank_success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <div class="alert alert-info alert-border-left">
+                                <i class="ri-information-line align-middle fs-16"></i>
+                                <strong>Bank Account Information</strong>
+                                <p class="mb-0 mt-2">
+                                    Masukkan informasi rekening bank Anda untuk menerima pembayaran dari pembeli. 
+                                    Informasi ini akan ditampilkan kepada pembeli saat melakukan transfer manual.
+                                </p>
+                            </div>
+
+                            <form action="{{ route('profile.bank.update') }}" method="post">
+                                @csrf
+                                @method('patch')
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="bank_name" class="form-label">Nama Bank <span class="text-danger">*</span></label>
+                                            <select class="form-select @error('bank_name') is-invalid @enderror" 
+                                                    id="bank_name" name="bank_name" required>
+                                                <option value="">Pilih Bank</option>
+                                                <option value="BCA" {{ old('bank_name', Auth::user()->bank_name) == 'BCA' ? 'selected' : '' }}>BCA</option>
+                                                <option value="BNI" {{ old('bank_name', Auth::user()->bank_name) == 'BNI' ? 'selected' : '' }}>BNI</option>
+                                                <option value="BRI" {{ old('bank_name', Auth::user()->bank_name) == 'BRI' ? 'selected' : '' }}>BRI</option>
+                                                <option value="Mandiri" {{ old('bank_name', Auth::user()->bank_name) == 'Mandiri' ? 'selected' : '' }}>Mandiri</option>
+                                                <option value="CIMB Niaga" {{ old('bank_name', Auth::user()->bank_name) == 'CIMB Niaga' ? 'selected' : '' }}>CIMB Niaga</option>
+                                                <option value="Danamon" {{ old('bank_name', Auth::user()->bank_name) == 'Danamon' ? 'selected' : '' }}>Danamon</option>
+                                                <option value="Permata" {{ old('bank_name', Auth::user()->bank_name) == 'Permata' ? 'selected' : '' }}>Permata</option>
+                                                <option value="BTPN" {{ old('bank_name', Auth::user()->bank_name) == 'BTPN' ? 'selected' : '' }}>BTPN</option>
+                                                <option value="BSI" {{ old('bank_name', Auth::user()->bank_name) == 'BSI' ? 'selected' : '' }}>BSI</option>
+                                                <option value="Lainnya" {{ old('bank_name', Auth::user()->bank_name) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                            </select>
+                                            @error('bank_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="bank_account_number" class="form-label">Nomor Rekening <span class="text-danger">*</span></label>
+                                            <input type="text" 
+                                                class="form-control @error('bank_account_number') is-invalid @enderror"
+                                                id="bank_account_number" name="bank_account_number" 
+                                                placeholder="Contoh: 1234567890"
+                                                value="{{ old('bank_account_number', Auth::user()->bank_account_number) }}" 
+                                                required>
+                                            @error('bank_account_number')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label for="bank_account_name" class="form-label">Nama Pemilik Rekening <span class="text-danger">*</span></label>
+                                            <input type="text" 
+                                                class="form-control @error('bank_account_name') is-invalid @enderror"
+                                                id="bank_account_name" name="bank_account_name" 
+                                                placeholder="Contoh: John Doe (sesuai rekening bank)"
+                                                value="{{ old('bank_account_name', Auth::user()->bank_account_name) }}" 
+                                                required>
+                                            @error('bank_account_name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="text-muted">Pastikan nama sesuai dengan rekening bank Anda</small>
+                                        </div>
+                                    </div>
+                                    
+                                    @if(Auth::user()->hasCompleteBankInfo())
+                                    <div class="col-lg-12">
+                                        <div class="alert alert-success">
+                                            <i class="ri-check-circle-line align-middle fs-16"></i>
+                                            <strong>Informasi Bank Saat Ini:</strong>
+                                            <ul class="mb-0 mt-2">
+                                                <li><strong>Bank:</strong> {{ Auth::user()->bank_name }}</li>
+                                                <li><strong>No. Rekening:</strong> {{ Auth::user()->bank_account_number }}</li>
+                                                <li><strong>Nama Pemilik:</strong> {{ Auth::user()->bank_account_name }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <div class="col-lg-12">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="ri-save-line align-bottom me-1"></i> 
+                                                {{ Auth::user()->hasCompleteBankInfo() ? 'Update Bank Account' : 'Save Bank Account' }}
+                                            </button>
+                                            <a href="{{ route('profile') }}" class="btn btn-soft-secondary">
+                                                <i class="ri-close-line align-bottom me-1"></i> Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

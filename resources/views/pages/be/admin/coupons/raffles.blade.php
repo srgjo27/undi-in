@@ -241,7 +241,7 @@
                                         @endif
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center py-4">
+                                            <td colspan="7" class="text-center py-4">
                                                 <div class="text-muted">
                                                     <i class="las la-dice fs-2 mb-3"></i>
                                                     <p>No properties with coupons found</p>
@@ -277,22 +277,18 @@
             return;
         }
 
-        // Simple approach - just add Bootstrap classes and show
         modalElement.classList.add('show');
         modalElement.style.display = 'block';
         modalElement.setAttribute('aria-modal', 'true');
         modalElement.setAttribute('role', 'dialog');
         
-        // Add backdrop
         const backdrop = document.createElement('div');
         backdrop.className = 'modal-backdrop fade show';
         backdrop.id = 'backdrop-' + propertyId;
         document.body.appendChild(backdrop);
         
-        // Add body class for modal-open
         document.body.classList.add('modal-open');
         
-        // Close handlers
         const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
         closeButtons.forEach(function(btn) {
             btn.onclick = function() {
@@ -300,7 +296,6 @@
             };
         });
         
-        // Close on backdrop click
         backdrop.onclick = function() {
             closeRaffleModal(propertyId);
         };
@@ -325,7 +320,6 @@
         document.body.classList.remove('modal-open');
     }
 
-    // Handle escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const openModals = document.querySelectorAll('.modal.show');
