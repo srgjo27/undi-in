@@ -21,7 +21,6 @@ return new class extends Migration
             $table->timestamp('edited_at')->nullable();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
-
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->index(['conversation_id', 'created_at']);

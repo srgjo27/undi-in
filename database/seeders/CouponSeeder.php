@@ -72,7 +72,6 @@ class CouponSeeder extends Seeder
                     'quantity' => $quantity,
                     'total_price' => $totalPrice,
                     'status' => 'paid',
-                    'payment_gateway' => 'bank_transfer',
                     'paid_at' => now(),
                 ]);
 

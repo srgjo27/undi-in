@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->timestamp('last_activity')->nullable();
             $table->timestamps();
-
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->index(['type', 'last_activity']);
         });

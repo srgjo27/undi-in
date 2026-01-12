@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamp('last_read_at')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unique(['conversation_id', 'user_id']);

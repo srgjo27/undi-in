@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            // Remove Midtrans-specific columns that are no longer needed
             $table->dropColumn([
                 'payment_gateway',
                 'payment_token',
@@ -29,7 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            // Restore Midtrans columns if rollback is needed
             $table->string('payment_gateway')->nullable()->after('status');
             $table->string('payment_token')->nullable()->after('payment_gateway');
             $table->string('gateway_order_id')->nullable()->after('payment_token');

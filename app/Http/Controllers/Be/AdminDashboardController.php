@@ -80,8 +80,8 @@ class AdminDashboardController extends Controller
 
         $monthly_revenue = Transaction::where('status', 'success')
             ->select(
-                DB::raw('YEAR(created_at) as year'),
-                DB::raw('MONTH(created_at) as month'),
+                DB::raw('EXTRACT(YEAR FROM created_at) as year'),
+                DB::raw('EXTRACT(MONTH FROM created_at) as month'),
                 DB::raw('SUM(amount) as total')
             )
             ->whereYear('created_at', date('Y'))

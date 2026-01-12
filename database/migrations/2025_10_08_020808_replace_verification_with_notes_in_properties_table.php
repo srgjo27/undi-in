@@ -23,11 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('properties', function (Blueprint $table) {
-            // Restore verification columns
             $table->enum('verification_status', ['pending', 'approved', 'rejected'])->default('pending')->after('status');
             $table->text('verification_notes')->nullable()->after('verification_status');
-
-            // Drop notes column
             $table->dropColumn('notes');
         });
     }

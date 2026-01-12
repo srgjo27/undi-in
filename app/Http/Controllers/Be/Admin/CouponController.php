@@ -287,9 +287,9 @@ class CouponController extends Controller
         $monthlyTrendsQuery = DB::table('coupons')
             ->join('properties', 'coupons.property_id', '=', 'properties.id')
             ->select(
-                DB::raw('YEAR(coupons.created_at) as year'),
-                DB::raw('MONTH(coupons.created_at) as month'),
-                DB::raw('MONTHNAME(coupons.created_at) as month_name'),
+                DB::raw('EXTRACT(YEAR FROM coupons.created_at) as year'),
+                DB::raw('EXTRACT(MONTH FROM coupons.created_at) as month'),
+                DB::raw("TO_CHAR(coupons.created_at, 'Month') as month_name"),
                 DB::raw('COUNT(coupons.id) as coupons_count'),
                 DB::raw('SUM(properties.coupon_price) as total_revenue')
             );
